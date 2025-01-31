@@ -1,0 +1,11 @@
+{
+  "name": "Restaurant Website",
+  "short_name": "restaurant_website",
+  "description": "TODO",
+  "theme_color": "#42a5f5",
+  "background_color": "#42a5f5",
+  "display": "standalone",
+  "orientation": "landscape",
+  "scope": "/",
+  "start_url": "/"
+}
