@@ -1,0 +1,118 @@
+/*********************************************
+    			Call Bootstrap
+*********************************************/
+
+@import url("bootstrap/bootstrap.min.css");
+@import url("bootstrap-override.css");
+@import url("//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css");
+
+/*********************************************
+        		Theme Elements
+*********************************************/
+.big-heading {
+  color: #f07b3f;
+  line-height: 1.5;
+  /*font-size: 200%;*/
+}
+
+body {
+background-color: #FCDEC0;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Montserrat', sans-serif;
+
+}
+
+.gold{
+	color: #FFBF00;
+}
+
+#title {
+  background-color: #0A1931;
+}
+
+.container-fluid-contentMain {
+  padding: 3% 3% 3%;
+}
+
+.container-fluid-search {
+  padding: 10% 30% 10%;
+}
+
+.container-fluid-dropdown {
+  padding: 0% 20% 0%;
+}
+
+.container-fluid-title {
+  padding: 0% 10% 0%;
+}
+
+.navbar-brand {
+  font-family: "Ubuntu";
+  font-size: 3rem;
+  color: #E3954E;
+}
+
+.navbar-brand:hover {
+  color: #FCDEC0;
+}
+
+.navbar {
+  /*padding: 0 0 4.5rem;*/
+}
+
+.nav-item {
+  padding: 0 18px;
+}
+
+.nav-link {
+  font-size: 1.2rem;
+  font-weight: 200;
+  color: #ff7600;
+}
+
+.change-color{
+  color: #E3954E;
+}
+
+.nav-link:hover {
+  color: #E3954E;
+}
+
+.book-image {
+  width: 80%;
+  margin-left: 20px;
+}
+
+.search-button {
+  color: #FCDEC0;
+  border-color: #E3954E;
+}
+
+.explore-button {
+  color: #F9F9F9;
+  border-color: #E3954E;
+  background-color: #E3954E;
+  margin-top: 20px;
+}
+
+/* Footer Section */
+
+#footer {
+  background-color: #0A1931;
+  text-align: center;
+}
+
+#footer p {
+  color: #F07B3F;
+  margin: 0;
+}
+.footer-icons {
+  padding: 20px 10px;
+  color: #F07B3F;
+}

@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <title>Signin</title>
+  <!-- CSS Stylesheets -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+  <link rel="stylesheet" href="..\..\static\css\signin.css">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" crossorigin="anonymous" />
+</head>
+</head>
+
+<body class="text-center">
+
+  <main class="form-signin">
+    <form class="main-form" name="loginForm" method="POST">
+      {% csrf_token %}
+      <a class="navbar-brand" href="index.html">Genlib</a>
+      <h5 class="mb-3 fw-normal">Please sign in</h5>
+
+      <div class="form-floating">
+        <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" name="userEmail">
+        <label for="floatingInput">Email address</label>
+      </div>
+      <div class="form-floating">
+        <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="userPassword">
+        <label for="floatingPassword">Password</label>
+      </div>
+
+      <div class="checkbox mb-3">
+        <label>
+          <input type="checkbox" value="remember" name="checks[]"> Remember me
+        </label>
+      </div>
+      <a href="{% url 'password_reset' %}">Forgot password?</a>
+      <button class="w-100 btn signin-button" type="submit">Sign in</button>
+      <hr>
+      <div class="create-account">
+        <p> New to Genlib? </p>
+        <a class="btn signup-button" href="sign-up.html">Create your Genlib account</a>
+      </div>
+      <p class="mt-5 mb-3 text-muted">&copy; 2010-2021</p>
+    </form>
+  </main>
+
+  {% if email_flag %}
+    <script>alert("Entered email is not in database")</script>
+  {% endif %}
+  {% if active_flag %}
+    <script>alert("Current account is not activated. Go to your email to activate it.")</script>
+  {% endif %}
+  {% if password_flag %}
+    <script>alert("Entered password is incorrect")</script>
+  {% endif %}
+  {% if suspended_flag %}
+    <script>alert("Account is currently suspended")</script>
+  {% endif %}
+</body>
+
+</html>

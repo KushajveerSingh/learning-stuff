@@ -1,0 +1,353 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <title>Genlib</title>
+
+    <!-- CSS Stylesheets -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <link rel="stylesheet" href="..\..\static\css\styles.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&family=Ubuntu:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+        crossorigin="anonymous" />
+</head>
+
+<body>
+    <section id="title">
+
+        <div class="container-fluid">
+            <nav class="navbar navbar-expand-lg">
+                <a class="navbar-brand" href="/index.html">Genlib</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <form class="d-flex" method="POST">
+                                {% csrf_token %}
+                                <input class="form-control me-2" type="search" placeholder="Search for Books"
+                                    aria-label="Search" name="search" value="">
+                                <button class="btn search-button" type="submit" name="search_button"
+                                    value="search_button">Search</button>
+                            </form>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/browse-books.html">Browse</a>
+                        </li>
+                        <li class="nav-item">
+                            <form method="POST">
+                                {% csrf_token %}
+                            <button class="btn nav-link" type="submit" name="advanced_search_button" value="advanced_search_button">Advanced Search</button>
+                            </form>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/cart.html"><i class="fas fa-shopping-cart"></i> <span
+                                    class="fa-layers-text fa-inverse cart-value">{{ cartCount }}</span></a>
+                        </li>
+
+                        {% if not request.user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/login.html">Sign in</a>
+                        </li>
+
+                        <!-- Else show Edit Profile and Sign Out -->
+                        {% else %}
+                        <li class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <b>&nbsp; {{ user.first_name}}</b> <i class="fa fa-user"></i>
+                            </a>
+                            {% if user.is_staff %}
+                            <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
+                                <li><a class="dropdown-item" href="/admin-home.html">Admin Portal</a></li>
+                                <li><a class="dropdown-item" href="/editprofile.html">Edit Profile</a></li>
+                                <li><a class="dropdown-item" href="/orderHistory.html">Order History</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item" href="/signout">Sign out</a></li>
+                            </ul>
+                            {% else %}
+                            <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
+                                <li><a class="dropdown-item" href="/editprofile.html">Edit Profile</a></li>
+                                <li><a class="dropdown-item" href="/orderHistory.html">Order History</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item" href="/signout">Sign out</a></li>
+                            </ul>
+                            {% endif %}
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </section>
+
+    <section>
+
+        <div id="carouselExampleIndicators" class="carousel slide carousel-fade" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
+                    aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+                    aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+                    aria-label="Slide 3"></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="..\..\static\images\Gateway_Quote_A1_06-29.jpg" class="d-block w-100" alt="...">
+                </div>
+                <div class="carousel-item">
+                    <img src="..\..\static\images\Gateway_Quote_A2_06-29.jpg" class="d-block w-100" alt="...">
+                </div>
+                <div class="carousel-item">
+                    <img src="..\..\static\images\Gateway_Quote_A3_06-29.jpg" class="d-block w-100" alt="...">
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </button>
+        </div>
+    </section>
+
+    <!--Category-->
+
+    <section id="category">
+        <div class="container-fluid">
+            <h1 class="big-heading">Categories</h1>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="card col-lg-2 cat-card">
+                        <button class="stretched-link text-center cat-btn" type="submit" name="espionage_cat"
+                            value="espionage_cat">
+                            <img class="card-img-top cat-card-img" src="..\..\static\images\png\020-fantasy.png"
+                                alt="Card image">
+                            <div class="card-body">
+                                <h6 class="card-title text-center">Espionage</h6>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="card col-lg-2 cat-card">
+                        <button class="stretched-link text-center cat-btn" type="submit" name="contemporary_cat"
+                            value="contemporary_cat">
+                            <img class="card-img-top cat-card-img" src="..\..\static\images\png\031-memory.png"
+                                alt="Card image">
+
+                            <div class="card-body">
+                                <h6 class="card-title text-center">Contemporary Women</h6>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="card col-lg-2 cat-card">
+                        <button class="stretched-link text-center cat-btn" type="submit" name="classics_cat"
+                            value="classics_cat">
+                            <img class="card-img-top cat-card-img" src="..\..\static\images\png\044-technology.png"
+                                alt="Card image">
+                            <div class="card-body">
+                                <h6 class="card-title text-center">Classics</h6>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="card col-lg-2 cat-card">
+                        <button class="stretched-link text-center cat-btn" type="submit" name="espionage_cat"
+                            value="literary_cat">
+                            <img class="card-img-top cat-card-img" src="..\..\static\images\png\033-mystery.png"
+                                alt="Card image">
+                            <div class="card-body">
+                                <h6 class="card-title text-center">Literary</h6>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="card col-lg-2 cat-card">
+                        <button class="stretched-link text-center cat-btn" type="submit" name="horror_cat"
+                            value="horror_cat">
+                            <img class="card-img-top cat-card-img" src="..\..\static\images\png\024-humor.png"
+                                alt="Card image">
+                            <div class="card-body">
+                                <h6 class="card-title text-center">Horror</h6>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="card col-lg-2 cat-card">
+                        <button class="stretched-link text-center cat-btn" type="submit" name="all_cat" value="all_cat">
+                            <img class="card-img-top cat-card-img" src="..\..\static\images\png\005-book.png"
+                                alt="Card image">
+                            <div class="card-body">
+                                <h6 class="card-title text-center">Browse All</h6>
+                            </div>
+                        </button>
+                    </div>
+            </form>
+
+        </div>
+        </div>
+    </section>
+
+    <!-- Top Selling Section-->
+
+    <section id="top-sellers">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-6">
+                    <h1 class="top-selling-heading big-heading">Top Sellers of the week</h1>
+                </div>
+                <div class="navi-btn col-lg-6 text-center">
+                    <a class="btn prev-btn mb-3 mr-1" href="#topsellers1" data-bs-slide="prev">
+                        <i class="fa fa-arrow-left"></i>
+                    </a>
+                    <a class="btn next-btn mb-3 " href="#topsellers1" data-bs-slide="next">
+                        <i class="fa fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+
+            <div id="topsellers1" class="nav justify-content-center carousel slide carousel-multi-item"
+                data-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <div class="row">
+                            {% for book in best_sellers|slice:":4" %}
+                            <div class="book-column col-lg-3 col-md-6">
+                                <div class="card h-100">
+                                    <img src="..\..\static\{{ book.image_path }}" class="card-img-top" alt="...">
+                                    <div class="card-header">
+                                        <h5 class="">{{ book.title }}</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <p>Author: {{ book.author }}</p>
+                                        <p class="text-lowercase fs-7"><span class="text-capitalize">Summary:</span>
+                                          {{ book.description|truncatewords:20 }}</p>
+                                        <p><strong>Price: ${{ book.cost }}</strong></p>
+                                    </div>
+                                    <div class="card-footer">
+                                        <form method="POST" style=" display:inline!important;">
+                                            {% csrf_token %}
+                                            <button class="add-cart-btn btn" name="add_to_cart"
+                                                value="{{ book.isbn }}">Add to Cart</button>
+                                        </form>
+                                        <a href="{% url 'book-details' book.title %}"
+                                            class="details-btn btn">Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="carousel-item">
+                        <div class="row">
+                            {% for book in best_sellers|slice:"4:8" %}
+                            <div class="book-column col-lg-3 col-md-6">
+                                <div class="card h-100">
+                                    <img src="..\..\static\{{ book.image_path }}" class="card-img-top" alt="...">
+                                    <div class="card-header">
+                                        <h5 class="">{{ book.title }}</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <p>Author: {{ book.author }}</p>
+                                        <p class="text-lowercase fs-7"><span class="text-capitalize">Summary:</span>
+                                          {{ book.description|truncatewords:20 }}</p>
+                                        <p><strong>Price: ${{ book.cost }}</strong></p>
+                                    </div>
+                                    <div class="card-footer">
+                                        <form method="POST" style=" display:inline!important;">
+                                            {% csrf_token %}
+                                            <button class="add-cart-btn btn btn-block" name="add_to_cart"
+                                                value="{{ book.isbn }}">Add to Cart</button>
+                                        </form>
+                                        <a href="{% url 'book-details' book.title %}"
+                                            class="details-btn btn btn-block">Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- New Arrivals -->
+
+    <section id="new-arrivals">
+        <div class="container-fluid">
+            <h1 class="big-heading">New Arrivals</h1>
+            <div class="row">
+                {% for book in new_arrivals|slice:":8" reversed %}
+                <div class="book-column col-lg-3 col-md-6">
+                    <div class="card h-100">
+                        <img src="..\..\static\{{ book.image_path }}" class="card-img-top" alt="...">
+                        <div class="card-header">
+                            <h5 class="">{{ book.title }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <p>Author: {{ book.author }}</p>
+                            <p class="text-lowercase fs-7"><span class="text-capitalize">Summary:</span>
+                              {{book.description|truncatewords:20 }}</p>
+                            <p><strong>Price: ${{ book.cost }}</strong></p>
+                        </div>
+                        <div class="card-footer">
+                            <form method="POST" style=" display:inline!important;">
+                                {% csrf_token %}
+                                <button class="add-cart-btn btn btn-block" name="add_to_cart"
+                                    value="{{ book.isbn }}">Add to Cart</button>
+                            </form>
+                            <a href="{% url 'book-details' book.title %}" class="details-btn btn btn-block">Details</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <footer id="footer">
+
+        <div class="container-fluid">
+            <i class="footer-icons fab fa-twitter"></i>
+            <i class="footer-icons fab fa-facebook-f"></i>
+            <i class="footer-icons fab fa-instagram"></i>
+            <i class="footer-icons fas fa-envelope"></i>
+            <p>© Copyright 2021 Genlib</p>
+        </div>
+
+    </footer>
+
+    <!-- Bootsrap Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
+
+    {% if out_of_stock_flag == True %}
+    <script>
+        alert("We do not have the stock to add the books to your cart.")
+    </script>
+    {% endif %}
+</body>
+
+</html>

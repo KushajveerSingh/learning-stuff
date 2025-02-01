@@ -1,0 +1,225 @@
+
+/********************************** Headings **********************************/
+.big-heading {
+  color: #F07B3F;
+  line-height: 1.5;
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: #F6F6F6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 900;
+}
+
+
+/*******************************Title Section *******************************************/
+#title {
+  background-color: #0A1931;
+}
+
+.container-fluid {
+  padding: 3% 15% 7%;
+}
+
+#title .container-fluid{
+  padding: 0 15%;
+}
+
+.navbar-brand {
+  font-family: "Ubuntu";
+  font-size: 3rem;
+  color: #FF7600;
+}
+
+.navbar-brand:hover {
+  color: #FCDEC0;
+}
+
+.nav-item {
+  padding: 0 18px;
+}
+
+.nav-link {
+  font-size: 1.2rem;
+  font-weight: 200;
+  color: #FFC074;
+}
+
+.nav-link:hover {
+  color: #E3954E;
+}
+
+.book-image {
+  width: 80%;
+  margin-left: 20px;
+}
+
+.search-button {
+  color: #FFC074;
+  border-color: #E3954E;
+}
+
+.explore-button {
+  color: #F9F9F9;
+  border-color: #E3954E;
+  background-color: #E3954E;
+  margin-top: 20px;
+}
+
+.cart-value{
+
+}
+
+/*******************************Category Section***********************************/
+#category {
+  background-color: #F6F6F6;
+}
+
+.cat-card-img{
+  margin-top: 1.5rem;
+  height: 100px;
+  width: 100px;
+}
+
+.cat-card {
+  border: 1px thin;
+  width: 15%;
+  margin-right: 20px;
+}
+
+.cat-card:hover {
+  border: 2px solid;
+  border-color: #F07B3F;
+}
+
+.cat-btn {
+  background-color: white;
+  border: none;
+}
+/**************************Top Sellers Section*****************************************/
+
+#top-sellers {
+  background-color: #0A1931;
+}
+
+.next-btn, .prev-btn {
+  background-color: #F07B3F;
+}
+
+/* New Arrivals Section */
+
+#new-arrivals {
+  background-color: #F6F6F6;
+}
+
+.book-column {
+  padding: 3% 2%;
+}
+
+.add-cart-btn, .details-btn {
+  color: #F9F9F9;
+  border-color: #F07B3F;
+  background-color: #F07B3F;
+  margin-right: 15px;
+  display: inline-block;
+}
+
+form {
+  display:inline!important;
+}
+
+.navi-btn {
+  position: relative;
+  left: 20%;
+  top: 50px;;
+}
+
+.top-selling-heading {
+  position: relative;
+  left: 50%;
+}
+
+/* Footer Section */
+
+#footer {
+  background-color: #0A1931;
+  text-align: center;
+}
+
+#footer p {
+  color: #F07B3F;
+}
+.footer-icons {
+  padding: 20px 10px;
+  color: #F07B3F;
+}
+
+.container {
+  max-width: 960px;
+}
+
+#searchBarSec {
+  background-color: #F6F6F6;
+}
+
+.summary-container {
+  padding: 5%;
+}
+
+.history-container {
+  background-color: #fff;
+  text-align: center;
+}
+
+
+
+.help-button {
+  color: #FFC074;
+  border-color: #E3954E;
+}
+
+.reorder-button {
+  color: #F9F9F9;
+  border-color: #E3954E;
+  background-color: #E3954E;
+}
+
+.order-card {
+  margin-bottom: 25px;
+}
+
+/*************************************Book Details****************************/
+.book-image {
+  position: relative;
+  width: 50%;
+  top: 80px;
+  left: 20%;
+}
+
+.inner-row {
+  margin-top: 3rem;
+}
+
+.star-rating {
+  line-height:1.5;
+  font-size:1.2rem;
+}
+
+.fa-star{
+  color:#F07B3F;
+}
+
+.col-des {
+  margin-bottom: 10px;
+}
+
+/*****************************Search Page********************/
+.search-col {
+  margin-bottom: 30px;
+}

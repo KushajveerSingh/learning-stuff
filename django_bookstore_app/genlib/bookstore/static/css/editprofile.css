@@ -1,0 +1,123 @@
+
+.big-heading {
+  color: #f07b3f;
+  line-height: 1.5;
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+body {
+background-color: #FCDEC0;
+}
+
+
+#title {
+  background-color: #0A1931;
+}
+
+.container-fluid {
+  padding: 3% 15% 7%;
+}
+
+#title .container-fluid{
+  padding: 0 15%;
+}
+
+.navbar-brand {
+  font-family: "Ubuntu";
+  font-size: 3rem;
+  color: #FF7600;
+}
+
+.navbar-brand:hover {
+  color: #FCDEC0;
+}
+
+.nav-item {
+  padding: 0 18px;
+}
+
+.nav-link {
+  color: #FFC074;
+}
+
+.nav-link:hover {
+  color: #E3954E;
+}
+
+.book-image {
+  width: 80%;
+  margin-left: 20px;
+}
+
+.search-button {
+  color: #FFC074;
+  border-color: #E3954E;
+}
+
+.explore-button {
+  color: #F9F9F9;
+  border-color: #E3954E;
+  background-color: #E3954E;
+}
+
+label{
+  margin-bottom: .1rem;
+  margin-top: .5rem;
+}
+
+.form-control:focus {
+    box-shadow: none;
+    border-color: #FCDEC0
+}
+
+.profile-button:hover {
+    background: #FCDEC0;
+    color: black;
+    box-shadow: none;
+    box-shadow:0px 0px 0px 2px black inset;
+}
+
+.profile-button {
+    background: #E3954E;
+    box-shadow: none;
+    border: none;
+}
+
+.profile-button:focus {
+    background: #E3954E;
+    box-shadow: none
+}
+
+.profile-button:active {
+    background: #E3954E;
+    box-shadow: none
+}
+
+.back:hover {
+    color: #E3954E;
+    cursor: pointer
+}
+
+.add-experience:hover {
+    background: #FCDEC0;
+    cursor: pointer;
+    border: solid 1px Black;
+}
+
+
+/* Footer Section */
+
+#footer {
+  background-color: #0A1931;
+  text-align: center;
+}
+
+#footer p {
+  color: #F07B3F;
+  margin: 0;
+}
+.footer-icons {
+  padding: 20px 10px;
+  color: #F07B3F;
+}

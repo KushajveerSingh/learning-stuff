@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <title>Browse by Categories</title>
+  <!-- CSS Stylesheets -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+  <link rel="stylesheet" href="..\..\static\css\browse-books.css">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" crossorigin="anonymous" />
+</head>
+</head>
+
+<body>
+  <main>
+    <section id="title">
+
+      <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg">
+          <a class="navbar-brand" href="/index.html">Genlib</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                <form class="d-flex" method="POST">
+                    {% csrf_token %}
+                  <input class="form-control me-2" type="search" placeholder="Search for Books" aria-label="Search" name="search">
+                  <button class="btn search-button" type="submit" name="search_button" value="search_button">Search</button>
+                </form>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/browse-books.html">Browse</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/search.html">Advanced Search</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/cart.html"><i class="fas fa-shopping-cart"></i><span class="fa-layers-text fa-inverse cart-value">{{ cartCount }}</span></a>
+              </li>
+
+              {% if not request.user.is_authenticated %}
+              <li class="nav-item">
+                <a class="nav-link" href="login.html">Sign in</a>
+              </li>
+
+              <!-- Else show Edit Profile and Sign Out -->
+              {% else %}
+              <li class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
+                  <b>&nbsp; {{ user.first_name}}</b>  <i class="fa fa-user"></i>
+                </a>
+                {% if user.is_staff %}
+                <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
+                  <li><a class="dropdown-item" href="/admin-home.html">Admin Portal</a></li>
+                  <li><a class="dropdown-item" href="/editprofile.html">Edit Profile</a></li>
+                  <li><a class="dropdown-item" href="/orderHistory.html">Order History</a></li>
+                  <li>
+                    <hr class="dropdown-divider">
+                  </li>
+                  <li><a class="dropdown-item" href="/signout">Sign out</a></li>
+                </ul>
+                {% else %}
+                <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
+                  <li><a class="dropdown-item" href="/editprofile.html">Edit Profile</a></li>
+                  <li><a class="dropdown-item" href="orderHistory.html">Order History</a></li>
+                  <li>
+                    <hr class="dropdown-divider">
+                  </li>
+                  <li><a class="dropdown-item" href="/signout">Sign out</a></li>
+                </ul>
+                {% endif %}
+              </li>
+              {% endif %}
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </section>
+    <div class="container-fluid">
+      <nav class="navbar navbar-expand-lg">
+        <h3 class="navbar-brand"><em>All Categories</em></h3>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <form class="d-flex">
+                <input class="form-control me-2" type="search" placeholder="Search for Books" aria-label="Search">
+                <button class="btn search-button" type="submit">Search</button>
+              </form>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i> Cart</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <hr>
+      <div class="row">
+        <div class="card col-lg-2 cat-card">
+          <a href="login.html" class="stretched-link text-center">
+            <img class="card-img-top cat-card-img" src="..\..\static\images\png\020-fantasy.png" alt="Card image">
+          </a>
+          <div class="card-body">
+            <h6 class="card-title text-center">Fantasy</h6>
+          </div>
+        </div>
+        <div class="card col-lg-2 cat-card">
+          <a href="login.html" class="stretched-link text-center">
+            <img class="card-img-top cat-card-img" src="..\..\static\images\png\031-memory.png" alt="Card image">
+          </a>
+          <div class="card-body">
+            <h6 class="card-title text-center">Adventure</h6>
+          </div>
+        </div>
+        <div class="card col-lg-2 cat-card">
+          <a href="login.html" class="stretched-link text-center">
+            <img class="card-img-top cat-card-img" src="..\..\static\images\png\044-technology.png" alt="Card image">
+          </a>
+          <div class="card-body">
+            <h6 class="card-title text-center">Science Fiction</h6>
+          </div>
+        </div>
+        <div class="card col-lg-2 cat-card">
+          <a href="login.html" class="stretched-link text-center">
+            <img class="card-img-top cat-card-img" src="..\..\static\images\png\033-mystery.png" alt="Card image">
+          </a>
+          <div class="card-body">
+            <h6 class="card-title text-center">Mystery</h6>
+          </div>
+        </div>
+        <div class="card col-lg-2 cat-card">
+          <a href="login.html" class="stretched-link text-center">
+            <img class="card-img-top cat-card-img" src="..\..\static\images\png\024-humor.png" alt="Card image">
+          </a>
+          <div class="card-body">
+            <h6 class="card-title text-center">Drama</h6>
+          </div>
+        </div>
+        <div class="card col-lg-2 cat-card">
+          <a href="login.html" class="stretched-link text-center">
+            <img class="card-img-top cat-card-img" src="..\..\static\images\png\020-fantasy.png" alt="Card image">
+          </a>
+          <div class="card-body">
+            <h6 class="card-title text-center">Fantasy</h6>
+          </div>
+        </div>
+        <div class="card col-lg-2 cat-card">
+          <a href="login.html" class="stretched-link text-center">
+            <img class="card-img-top cat-card-img" src="..\..\static\images\png\031-memory.png" alt="Card image">
+          </a>
+          <div class="card-body">
+            <h6 class="card-title text-center">Adventure</h6>
+          </div>
+        </div>
+        <div class="card col-lg-2 cat-card">
+          <a href="login.html" class="stretched-link text-center">
+            <img class="card-img-top cat-card-img" src="..\..\static\images\png\044-technology.png" alt="Card image">
+          </a>
+          <div class="card-body">
+            <h6 class="card-title text-center">Science Fiction</h6>
+          </div>
+        </div>
+        <div class="card col-lg-2 cat-card">
+          <a href="login.html" class="stretched-link text-center">
+            <img class="card-img-top cat-card-img" src="..\..\static\images\png\033-mystery.png" alt="Card image">
+          </a>
+          <div class="card-body">
+            <h6 class="card-title text-center">Mystery</h6>
+          </div>
+        </div>
+        <div class="card col-lg-2 cat-card">
+          <a href="login.html" class="stretched-link text-center">
+            <img class="card-img-top cat-card-img" src="..\..\static\images\png\024-humor.png" alt="Card image">
+          </a>
+          <div class="card-body">
+            <h6 class="card-title text-center">Drama</h6>
+          </div>
+        </div>
+        <div class="card col-lg-2 cat-card">
+          <a href="login.html" class="stretched-link text-center">
+            <img class="card-img-top cat-card-img" src="..\..\static\images\png\020-fantasy.png" alt="Card image">
+          </a>
+          <div class="card-body">
+            <h6 class="card-title text-center">Fantasy</h6>
+          </div>
+        </div>
+        <div class="card col-lg-2 cat-card">
+          <a href="login.html" class="stretched-link text-center">
+            <img class="card-img-top cat-card-img" src="..\..\static\images\png\031-memory.png" alt="Card image">
+          </a>
+          <div class="card-body">
+            <h6 class="card-title text-center">Adventure</h6>
+          </div>
+        </div>
+        <div class="card col-lg-2 cat-card">
+          <a href="login.html" class="stretched-link text-center">
+            <img class="card-img-top cat-card-img" src="..\..\static\images\png\044-technology.png" alt="Card image">
+          </a>
+          <div class="card-body">
+            <h6 class="card-title text-center">Science Fiction</h6>
+          </div>
+        </div>
+        <div class="card col-lg-2 cat-card">
+          <a href="login.html" class="stretched-link text-center">
+            <img class="card-img-top cat-card-img" src="..\..\static\images\png\033-mystery.png" alt="Card image">
+          </a>
+          <div class="card-body">
+            <h6 class="card-title text-center">Mystery</h6>
+          </div>
+        </div>
+        <div class="card col-lg-2 cat-card">
+          <a href="login.html" class="stretched-link text-center">
+            <img class="card-img-top cat-card-img" src="..\..\static\images\png\024-humor.png" alt="Card image">
+          </a>
+          <div class="card-body">
+            <h6 class="card-title text-center">Drama</h6>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+
+  <script src="..\..\static\js\admin-home.js"></script>
+</body>
+
+</html>

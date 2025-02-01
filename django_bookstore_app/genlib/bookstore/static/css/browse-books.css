@@ -1,0 +1,186 @@
+
+/********************************** Headings **********************************/
+.big-heading {
+  color: #F07B3F;
+  line-height: 1.5;
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: #F6F6F6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 900;
+}
+
+
+/*******************************Title Section *******************************************/
+#title {
+  background-color: #0A1931;
+}
+
+.container-fluid {
+  padding: 3% 15% 7%;
+}
+
+#title .container-fluid{
+  padding: 0 15%;
+}
+
+.navbar-brand {
+  font-family: "Ubuntu";
+  font-size: 3rem;
+  color: #FF7600;
+}
+
+.navbar-brand:hover {
+  color: #FCDEC0;
+}
+
+.nav-item {
+  padding: 0 18px;
+}
+
+.nav-link {
+  font-size: 1.2rem;
+  font-weight: 200;
+  color: #FFC074;
+}
+
+.nav-link:hover {
+  color: #E3954E;
+}
+
+.book-image {
+  width: 80%;
+  margin-left: 20px;
+}
+
+.search-button {
+  color: #FFC074;
+  border-color: #E3954E;
+}
+
+.explore-button {
+  color: #F9F9F9;
+  border-color: #E3954E;
+  background-color: #E3954E;
+  margin-top: 20px;
+}
+
+.cat-card-img{
+  margin-top: 1.5rem;
+  height: 100px;
+  width: 100px;
+}
+
+.cat-card {
+  border: 1px thin;
+  width: 15%;
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+
+.cat-card:hover {
+  border: 2px solid;
+  border-color: #F07B3F;
+}
+
+/* Footer Section */
+
+#footer {
+  background-color: #0A1931;
+  text-align: center;
+}
+
+#footer p {
+  color: #F07B3F;
+}
+.footer-icons {
+  padding: 20px 10px;
+  color: #F07B3F;
+}
+
+input[type="number"] {
+  -webkit-appearance: textfield;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+
+.number-input {
+  border: 2px solid #ddd;
+  display: inline-flex;
+}
+
+.number-input,
+.number-input * {
+  box-sizing: border-box;
+}
+
+.number-input button {
+  outline:none;
+  -webkit-appearance: none;
+  background-color: #F07B3F;
+  border: none;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2.5rem;
+  cursor: pointer;
+  margin: 0;
+  position: relative;
+}
+
+.number-input button:after {
+  display: inline-block;
+  position: absolute;
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  content: '\f077';
+  transform: translate(-50%, -50%) rotate(180deg);;
+}
+.number-input button.plus:after {
+  transform: translate(-50%, -50%) rotate(0deg);
+}
+
+.number-input input[type=number] {
+  font-family: sans-serif;
+  max-width: 5rem;
+  padding: .5rem;
+  border: none;
+  font-size: 1.5rem;
+  height: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  background-color: #F6F6F6;
+  position: relative;
+  top: 10px;
+}
+
+.cart-row {
+margin: 50px 0 0;
+}
+
+.cart-container {
+  text-align: center;
+}
+
+.cart-element {
+  position: relative;
+  top: 50px;
+}
+
+.lh-condensed { line-height: 1.25; }
+
+.form-element {
+  margin-top: 10px;
+}
