@@ -1,0 +1,147 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathdots}
+\usepackage[pdftex]{graphicx}
+\usepackage{fancyhdr}
+\usepackage[margin=1in]{geometry}
+\usepackage{multicol}
+\usepackage{bm}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{pdfpages}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{ulem}
+\usepackage{enumitem}
+\usepackage[T1]{fontenc}
+\usepackage{inconsolata}
+\usepackage{framed}
+\usepackage{wasysym}
+\usepackage[thinlines]{easytable}
+\usepackage{hyperref}
+\usepackage{minted}
+\usemintedstyle{perldoc}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=blue,
+}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=4
+}
+\lstset{style=mystyle}
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+\newcommand{\rightqed}{
+\begin{flushright}
+$\blacksquare$
+\end{flushright}
+}
+\newcommand\redsout{\bgroup\markoverwith{\textcolor{red}{\rule[0.5ex]{2pt}{0.4pt}}}\ULon}
+\newcommand{\solution}{\noindent\textbf{Solution:}\\\indent}
+\usepackage{graphics}
+\usepackage{subfig}
+\graphicspath{ {./images/} }
+
+\title{Path and Cycle Graphs}
+\author{Kushajveer Singh}
+\date{}
+
+\begin{document}
+\maketitle
+
+\subsection*{Problem 1}
+\solution
+Defining a new notation to make the solution cleaner
+\begin{equation*}
+    \begin{Bmatrix}
+    x_1 \\
+    x_2 \\
+    \vdots \\
+    x_v
+    \end{Bmatrix}M_{P_v}
+\end{equation*}
+Here $x_i$ represent the diagonal values of $M_{P_v}$ and $M_{P_v}$ represents the adjacency matrix of $P_v$. Let $X$ be a $v\times v$ matrix that has -1 at index $(1,1)$ and $(v,v)$ and all other entries are 0.
+
+\begin{align*}
+    L_{C_{2v}} &= \begin{bmatrix}
+    2 & \hdots & 0 \\
+    \vdots & \ddots & \vdots \\
+    0 & \hdots & 2
+    \end{bmatrix} - \begin{bmatrix}
+    M_{P_v} & X \\
+    X & M_{P_v}
+    \end{bmatrix} \\
+    &= \begin{bmatrix}
+    \begin{Bmatrix}
+    2 \\
+    \vdots \\
+    2
+    \end{Bmatrix}M_{P_v} & X \\
+    X & \begin{Bmatrix} 2 \\ \vdots \\ 2\end{Bmatrix}M_{P_v}
+    \end{bmatrix} \\
+    L_{C_{2v}}\begin{bmatrix}I_v \\ I_v\end{bmatrix} &= \begin{bmatrix}\begin{Bmatrix} 1 \\ 2 \\ \vdots \\ 2 \\ 1 \end{Bmatrix}M_{P_v} \\\begin{Bmatrix} 1 \\ 2 \\ \vdots \\ 2 \\ 1 \end{Bmatrix}M_{P_v}\end{bmatrix}
+\end{align*}
+\begin{align*}
+\begin{bmatrix}I_v & I_v \end{bmatrix}L_{C_{2v}}\begin{bmatrix}I_v \\ I_v\end{bmatrix} &= \begin{bmatrix}
+    \begin{Bmatrix}
+    2 \\ 4 \\ \vdots \\ 4 \\ 2
+    \end{Bmatrix}M_{P_v}
+    \end{bmatrix} \\
+    &= 2 \begin{bmatrix}\begin{Bmatrix}
+    1 \\ 2 \\ \vdots \\ 2 \\ 1
+    \end{Bmatrix}M_{P_v}\end{bmatrix} \\
+    &= 2L_{P_v}
+\end{align*}
+It is trivial to show that the right-hand side in above equation is equal to laplacian of $P_v$. As the path graph has diagonal values = (1, 2, ..., 2, 1) in the degree matrix and when we subtract adjacency matrix from degree matrix we are left with the above formula.
+\rightqed
+
+\newpage
+\subsection*{Problem 2}
+\solution
+Showing for $\vec{y}_k(a)$
+\begin{align*}
+    \vec{y}_k(a+v) &= \sin(\pi k\frac{a+v}{v}) \\
+                   &= \sin(\pi k\frac{a}{v} + \pi k) \\
+                   &= \sin(\pi k\frac{a}{v}) \\
+                   &= \vec{y}_k(a)
+\end{align*}
+
+Showing for $\vec{x}_k(a)$
+\begin{align*}
+    \vec{x}_k(a+v) &= \cos(\pi k\frac{a+v}{v}) \\
+                   &= \cos(\pi k\frac{a}{v} + \pi k) \\
+                   &= \begin{cases}
+                   -\cos(\pi k\frac{a}{v}) & k=odd \\
+                   \cos(\pi k\frac{a}{v}) & k=even
+                   \end{cases} \\
+                   &= \cos(\pi k\frac{a}{v}) \\
+                   &= \vec{x}_k(a)
+\end{align*}
+\rightqed
+\end{document}

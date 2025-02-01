@@ -1,0 +1,224 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathdots}
+\usepackage[pdftex]{graphicx}
+\usepackage{fancyhdr}
+\usepackage[margin=1in]{geometry}
+\usepackage{multicol}
+\usepackage{bm}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{pdfpages}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{enumitem}
+\usepackage[T1]{fontenc}
+\usepackage{inconsolata}
+\usepackage{framed}
+\usepackage{wasysym}
+\usepackage[thinlines]{easytable}
+\usepackage{hyperref}
+\usepackage{minted}
+\usemintedstyle{perldoc}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=blue,
+}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=4
+}
+\lstset{style=mystyle}
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+\newcommand{\rightqed}{
+\begin{flushright}
+$\blacksquare$
+\end{flushright}
+}
+\newcommand{\solution}{\noindent\textbf{Solution:}\\\indent}
+\usepackage{graphics}
+\usepackage{subfig}
+\graphicspath{ {./images/} }
+
+\title{CSCI 6470 Algorithms assignment 3}
+\author{Kushajveer Singh}
+\date{}
+
+\begin{document}
+\maketitle
+
+% Start problem 1
+\subsection*{Problem 1}
+\textit{
+    Fill DP table for $x=ACT$, $y=CAT$ and traceback path
+}
+
+\solution
+(1) In case of a tie $\uparrow$ is used to break the tie. \\
+
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+& \textbf{0} & \textbf{C} & \textbf{A} & \textbf{T} \\
+\hline
+\textbf{0} & 0 & 0 & 0 & 0 \\
+\hline
+\textbf{A} & 0 & 0, $\uparrow$ & 1, $\nwarrow$ & 1, $\leftarrow$ \\
+\hline 
+\textbf{C} & 0 & 1, $\nwarrow$ & 1, $\uparrow$ & 1, $\uparrow$ \\
+\hline
+\textbf{T} & 0 & 1, $\uparrow$ & 1, $\uparrow$ & 2, $\nwarrow$ \\
+\hline
+\end{tabular} \\
+
+(2) The traceback path is as follow
+
+\noindent PrintLCS(P,x,3,3) = PrintLCS(P,x,2,2) + Print($x_2$) \\
+PrintLCS(P,x,2,2) = PrintLCS(P,x,1,2) \\
+PrintLCS(P,x,1,2) = PrintLCS(P,x,0,1) + Print($x_1)$ \\
+PrintLCS(P,x,0,1) = return ()
+
+Therefore the longest subsequence returned by PrintLCS is \textbf{AT}, where indexes are explored in the following order: $(3,3) \rightarrow (2,2) \rightarrow (1,2) \rightarrow (0,1)$.
+
+
+\subsection*{Problem 2}
+\solution
+(1) The algorithm chooses $\uparrow$ i.e. $L(i-1,j)$ to break a tie.
+
+(2) Alternate trace paths are as follows
+
+Alternate trace path 1,
+\begin{equation*}
+    (7,6) \rightarrow (7,5) \rightarrow (6,4) \rightarrow (5,3) \rightarrow (4,3) \rightarrow (3,3) \rightarrow (2,2) \rightarrow (2,1) \rightarrow (1,0)
+\end{equation*}
+and the corresponding LCS printed by PrintLCS is \textbf{BCAB}.
+
+Alternate trace path 2,
+\begin{equation*}
+    (7,6) \rightarrow (7,5) \rightarrow (6,4) \rightarrow (5,3) \rightarrow (5,2) \rightarrow (4,1) \rightarrow (3,0)
+\end{equation*}
+and the corresponding output of PrintLCS is \textbf{BDAB}.
+
+\newpage
+\subsection*{Problem 3}
+\solution
+(1) The main idea is to use a different symbol ($\uparrow_\leftarrow$) for the case when there is a tie. The modified LCS algorithm is as follows
+\begin{lstlisting}[mathescape=true]
+LCS(x,y)
+    m = length(x), n = length(y);
+    for i = 0 to m
+        T[i,0] = 0
+    for j = 0 to n
+        T[0,j] = 0
+    for i = 1 to m
+        for j = 1 to n
+            if $x_i$ = $y_j$
+                T[i,j] = T[i-1,j-1]+1; P[i,j]='$\nwarrow$'
+            else if T[i,j-1] > T[i-1,j]
+                T[i,j] = T[i,j-1]; P[i,j]='$\leftarrow$'
+            else if T[i,j-1] < T[i-1,j]
+                T[i,j] = T[i-1,j]; P[i,j]='$\uparrow$'
+            else
+                T[i,j] = T[i-1,j]; P[i,j]='$\uparrow_\leftarrow$'
+\end{lstlisting}
+
+(2) The main idea is maintain a \textbf{lists} which is a list containing all longest common subsequence till (i,j). Now rather than printing the element in case of $\nwarrow$, we add the element to the right of every sublist of \textit{lists}. In case of $\uparrow_\leftarrow$, we combine the lists of (i-1,j) and (i,j-1). The modified PrintLCS algorithm is as follows
+\begin{lstlisting}[mathescape=true]
+PrintLCS(P,x,i,j, lists)
+    if (i>0) $\wedge$ (j>0)                             $\longrightarrow c_1$
+        if P[i,j] = '$\nwarrow$'                         $\longrightarrow c_2$
+            lists = PrintLCS(P,x,i-1,j-1, lists) $\longrightarrow t(i-1,j-1)$
+            Append $x_i$ to every sublist of lists  $\rightarrow \leq c_9length(lists)$
+        else if P[i,j] = '$\leftarrow$'                    $\longrightarrow c_3$
+            lists = PrintLCS(P,x,i,j-1, lists)   $\longrightarrow t(i,j-1)$
+        else if P[i,j] = '$\uparrow$'                     $\longrightarrow c_4$
+            lists = PrintLCS(P,x,i-1,j, lists)   $\longrightarrow t(i-1,j)$
+        else if P[i,j] = '$\uparrow_\leftarrow$'                    $\longrightarrow c_5$
+            list_1 = PrintLCS(P,x,i,j-1, lists)  $\longrightarrow t(i,j-1)$
+            list_2 = PrintLCS(P,x,i-1,j, lists)  $\longrightarrow t(i-1,j)$
+            lists = Merge list_1 and list_2      $\longrightarrow c_6$
+        return lists                             $\longrightarrow c_7$
+    else return ()                               $\longrightarrow c_8$
+\end{lstlisting}
+
+(3)\begin{equation*}
+    t(i,j) = \begin{cases}
+    a_1 & i=0\ or\ j=0 \\
+    \max\begin{cases}
+        t(i-1,j-1) + a_2length(lists) \\
+        t(i,j-1) \\
+        t(i-1,j) \\
+        t(i,j-1)+t(i-1,j) + a_3
+    \end{cases} & i>0\ and\ j>0
+    \end{cases}
+\end{equation*}
+
+$a_1,a_2,a_3$ are some constants. \textit{length(lists)} is bounded as $\leq \max(2^{i+1}, 2^{j+1})$ as it is a constant time to append an element, but the number of elements in the list can grow exponentially in the worst case.
+
+\subsection*{Problem 4}
+\solution
+At every index $(i,j)$, we will store two the value of $V(i,j)$ and the previous index which was used by the DP algorithm, which will be later used for the traceback process. \\
+
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+\hline
+& \textbf{0}& \textbf{1}& \textbf{2}& \textbf{3}& \textbf{4}& \textbf{5}& \textbf{6}\\
+\hline
+\textbf{0}& 0& 0& 0& 0& 0& 0& 0\\
+\hline
+\textbf{1}& 0& 0 (0,1)& 2 (0,0)& 2 (0,1)& 2 (0,2)& 2 (0,3)& 2 (0,4)\\
+\hline
+\textbf{2}& 0& 7 (1,0)& 7 (1,1)& 9 (1,2)& 9 (1,3)& 9 (1,4)& 9 (1,5)\\
+\hline
+\textbf{3}& 0& 7 (2,1)& 7 (2,2)& 9 (2,3)& 10 (2,1)& 10 (2,2)& 12 (2,3)\\
+\hline
+\textbf{4}& 0& 7 (3,1)& 7 (3,2)& 8 (3,3)& 10 (3,4)& 16 (3,1)& 16 (3,2)\\
+\hline
+\end{tabular} \\
+
+By tracing back from (4,6) we get the following path
+\begin{equation*}
+    (4,6) \rightarrow (3,2) \rightarrow (2,2) \rightarrow (1,1) \rightarrow (0,1)
+\end{equation*}
+
+and the highest value we get is 16, when we pack items 2 and 4.
+
+\subsection*{Problem 5}
+\solution
+
+\begin{equation*}
+    N(k,W) = \begin{cases}
+    0 & k=0\ or\ W=0 \\
+    N(k-1,W) & W<w_k \\
+    \max\begin{cases}
+        N(k-1, W-w_k)+1 \\
+        N(k-1, W)
+    \end{cases} & W\geq w_k
+    \end{cases}
+\end{equation*}
+\end{document}
+

@@ -1,0 +1,252 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathdots}
+\usepackage[pdftex]{graphicx}
+\usepackage{fancyhdr}
+\usepackage[margin=1in]{geometry}
+\usepackage{multicol}
+\usepackage{bm}
+\usepackage{listings}
+\usepackage[table]{xcolor}
+\usepackage{pdfpages}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{enumitem}
+\usepackage[T1]{fontenc}
+\usepackage{inconsolata}
+\usepackage{framed}
+\usepackage{wasysym}
+\usepackage[thinlines]{easytable}
+\usepackage{hyperref}
+\usepackage{minted}
+\usemintedstyle{perldoc}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=blue,
+}
+
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+\title{CS6690 Spectral Graph Theory Homework\\Getting comfortable again with linear llgebra}
+\author{Kushajveer Singh}
+\date{}
+
+\begin{document}
+\maketitle
+    \subsection*{Problem 1 (A)}
+    
+    \textit{
+        Suppose that \textit{A} is an $n \times n$ matrix. Show $$A_{i,j} = \langle \vec{e}_i, A\vec{e}_j \rangle$$
+    }
+    
+    \noindent\textit{Soln: }Solving $A\vec{e}_j$ first,
+    \begin{align*}
+        A\vec{e}_j &=
+        \begin{bmatrix}
+            a_{1,1} & a_{1,2} & \hdots & a_{1,n} \\
+            a_{2,1} & a_{2,2} & & a_{2,n} \\
+            \vdots & & \ddots & \vdots \\
+            a_{n,1} & a_{n,2} & \hdots & a_{n,n}
+        \end{bmatrix}
+        \begin{bmatrix}
+            e_{j_1} \\
+            e_{j_2} \\
+            \vdots \\
+            e_{j_n}
+        \end{bmatrix}
+        \\
+         &= 
+        \begin{bmatrix}
+        \sum\limits_k A_{1,k}e_{j_k} \\
+        \sum\limits_k A_{2,k}e_{j_k} \\
+        \vdots \\
+        \sum\limits_k A_{n,k}e_{j_k}
+        \end{bmatrix} \numberthis \label{eq:1}
+    \end{align*}
+    where $k$ goes from $1$ to $n$ and $e_{j_k}$ refers to the k-th element of $\vec{e}_j$.
+    
+    Now for every $i \in [1,n]$ we have,
+    \begin{align*}
+        \sum\limits_k A_{i,k}e_{j_k} &= A_{i,1}e_{j_1} + A_{i,2}e_{j_2} + \hdots + A_{i,n}e_{j_n} \\
+                                &= A_{i,j} \numberthis \label{eq:2}
+    \end{align*}
+    
+    \eqref{eq:2} follows from the fact that $e_{j_i}=0$ for every $i \neq j$. Putting result from \eqref{eq:2} in \eqref{eq:1} we get the following
+    \begin{equation}
+        A\vec{e}_j = 
+        \begin{bmatrix}
+        A_{1,j} \\
+        A_{2,j} \\
+        \vdots \\
+        A_{n,j} \\
+        \end{bmatrix}
+    \end{equation}
+    
+    Solving the main question now,
+    \begin{align*}
+        \langle \vec{e}_i, A\vec{e}_j \rangle &= 
+        \begin{bmatrix}
+            e_{i_1} & e_{i_2} & \hdots & e_{i_n}
+        \end{bmatrix}
+        \begin{bmatrix}
+            A_{1,j} \\
+            A_{2,j} \\
+            \vdots \\
+            A_{n,j} \\
+        \end{bmatrix}
+        \\
+        &= e_{i_1}A_{1,j} + e_{i_2}A_{2,j} + \hdots + e_{i_n}A_{n,j} \\
+        &= A_{ij} \numberthis \label{eq:4}
+    \end{align*}
+    
+    \eqref{eq:4} follows from the fact that $e_{i_k}=0$, for every $i \neq k$. Hence proved, 
+    $$A_{i,j} = \langle \vec{e}_i, A\vec{e}_j \rangle$$
+    
+    \subsection*{Problem 1 (B)}
+    \textit{
+        Suppose that $A$ is $n \times n$ matrix and $\vec{v},\vec{w} \in \mathbb{R}^n$. Show $$\langle A\vec{v}, \vec{w} \rangle = \langle \vec{v}, A^T\vec{w} \rangle$$
+    }
+    
+    \noindent\textit{Soln: }Let $A$ be a $n \times n$ matrix and let $\vec{v} \in \mathbb{R}^n$. From the properties of matrix transpose we know that $(A\vec{v})^T = \vec{v}^{T}A^T$.
+    
+    Proof:
+    \begin{align*}
+        A\vec{v} &= 
+        \begin{bmatrix}
+            a_{11} & \hdots & a_{1n} \\
+            \vdots & \ddots & \vdots \\
+            a_{n1} & \hdots & a_{nn} \\
+        \end{bmatrix}_{n \times n}
+        \begin{bmatrix}
+            v_1 \\
+            \vdots \\
+            v_n \\
+        \end{bmatrix}_{n \times 1}
+        \\
+        &= 
+        \begin{bmatrix}
+            \sum\limits_{i=1}^n a_{1i}v_i \\
+            \sum\limits_{i=1}^n a_{2i}v_i \\
+            \vdots \\
+            \sum\limits_{i=1}^n a_{ni}v_i \\
+        \end{bmatrix}_{n \times 1} \numberthis
+        \\
+        \vec{v}^TA^T &= 
+        \begin{bmatrix}
+            v_1 & v_2 & \hdots & v_n
+        \end{bmatrix}_{1 \times n}
+        \begin{bmatrix}
+            a_{11} & \hdots & a_{n1} \\
+            \vdots & \ddots & \hdots \\
+            a_{1n} & \hdots & a_{nn} \\
+        \end{bmatrix}_{n \times n}
+        \\
+        &= \begin{bmatrix}
+            \sum\limits_{i=1}^n v_ia_{1i} & \sum\limits_{i=1}^n v_ia_{2i} & \hdots & \sum\limits_{i=1}^n v_ia_{ni}
+        \end{bmatrix}_{1 \times n} \\
+        &= (A\vec{v})^T
+    \end{align*}
+    
+    Using Proposition 1 (3) i.e. $\langle \vec{v}, \vec{w} \rangle = \vec{v}^T\vec{w}$, we get
+    \begin{align*}
+        \langle A\vec{v}, \vec{w} \rangle &= (A\vec{v})^T\vec{w} \\
+                                          &= \vec{v}^TA^T\vec{w} \label{eq:6} \numberthis
+    \end{align*}
+    and,
+    \begin{align*}
+        \langle \vec{v}, A^T\vec{w} \rangle &= \vec{v}^T(A^T\vec{w}) \\
+                                          &= \vec{v}^TA^T\vec{w} \label{eq:7} \numberthis
+    \end{align*}
+    
+    As \eqref{eq:6} and \eqref{eq:7} are equal, we proved that
+    \begin{equation}
+        \langle A\vec{v}, \vec{w} \rangle = \langle \vec{v}, A^T\vec{w} \rangle
+    \end{equation}
+    \newpage
+    
+    \subsection*{Problem 2}
+    \textit{
+        Show that a linear map $A$ is an isometry $\iff$ $A$ is an orthogonal matrix.
+    }
+    
+    \noindent\texit{Soln: }
+    
+    \textbf{(a)} If a linear map $A$ is an isometry then prove $A$ is an orthogonal matrix.
+    
+    Consider $\vec{v}, \vec{w} \in \mathbb{R}^n$ and let $A$ be an insometry. From the definition of isometry we have,
+    \begin{align}
+        \langle \vec{v}, \vec{w} \rangle &= \langle A\vec{v}, A\vec{w} \rangle \\
+                                         &= \langle \vec{v}, A^TA\vec{w} \rangle \label{eq:first}
+    \end{align}
+    
+    In \eqref{eq:first}, we use the result from Problem 1b, by considering $\vec{u} = \vec{u}$ and $\vec{w} = A\vec{w}$ in the equation $\langle A\vec{v}, \vec{w} \rangle$.
+    
+    By definition of isometry, the length and direction (w.r.t. one of the standard basis vector) of a vector are preserved after the transformation, therefore the following must hold. $$\vec{w} = A^TA\vec{w}$$ Multiplying both sides by $\vec{w}^{-1}$, we get
+    \begin{align*}
+        \vec{w}\vec{w}^{-1} &= A^TA\vec{w}\vec{w}^{-1} \\
+        I &= A^TA
+    \end{align*}
+    
+    Hence proved $A$ must be orthogonal matrix if $A$ is an isometry.
+    
+    \vspace{5mm}
+    \textbf{(b)} If $A$ is an orthogonal matrix, then prove a linear map A is an isometry.
+    
+    Consider $\vec{v}, \vec{w} \in \mathbb{R}^n$.
+    \begin{align}
+    \langle A\vec{v}, A\vec{w} \rangle &= \langle \vec{v}, A^TA\vec{w} \rangle \label{eq:9}\\
+    &= \langle \vec{v}, \vec{w} \rangle \label{eq:10}
+    \end{align}
+    
+    \eqref{eq:9} follows from Problem 1b, where we consider $\vec{u} = \vec{u}$ and $\vec{w} = A\vec{w}$ in the equation $\langle A\vec{v}, \vec{w} \rangle$ and in \eqref{eq:10} we use the fact that $A^TA = I$ as $A$ is an orthogonal matrix. As $\langle \vec{v}, \vec{w} \rangle = \langle A\vec{v}, A\vec{w} \rangle$ it implies that A is an isometry.
+    
+    \newpage
+    \subsection*{Problem 3 (A)}
+    \textit{
+        Suppose that $A$ and $B$ are orthogonal $n \times n$ matrices. Prove $AB$ is an $n \times n$ orthogonal matrix.
+    }
+    
+    \noindent\textit{Soln: }We know for any matrix $(AB)^T = B^TA^T$ holds. If $A$ and $B$ are orthogonal matrices i.e $AA^T=I$ and $BB^T=I$, then 
+    \begin{align*}
+        (AB)(AB)^T &= ABB^TA^T \\
+                   &= A(BB^T)A^T \\
+                   &= AIA^T \\
+                   &= AA^T \\
+                   &= I
+    \end{align*}
+    Since $(AB)(AB)^T = I$. It implies that $AB$ is an orthogonal matrix. Hence proved.
+    
+    \subsection*{Problem 3 (B)}
+    \textit{
+        Suppose $A$ is an orthogonal $n \times n$ matrix. Prove that $A^{-1}$ is an orthogonal $n \times n$ matrix.
+    }
+    
+    \noindent\textit{Soln: }From the definition of orthogonal matrix, we know
+    \begin{align*}
+        AA^T &= I \\
+    \end{align*}
+    \indent Multiply both sides by $A^{-1}$
+    \begin{align*}
+        A^{-1}AA^T &= A^{-1}I \\
+        A^T &= A^{-1} \numberthis \label{eq:11}
+    \end{align*}
+    
+    To prove $A^{-1}$ is orthogonal we have to show that $A^{-1}(A^{-1})^T = I$. Using result from \eqref{eq:11} and the fact that $(A^T)^T = A$, we have the following
+    
+    \begin{align*}
+        A^{-1}(A^{-1})^T &= A^T(A^T)^T \\
+                         &= A^TA \\
+                         &= I \numberthis \label{eq:12}
+    \end{align*}
+    
+    Hence proved if $A$ is an orthogonal matrix, then $A^{-1}$ is also an orthogonal matrix.
+    
+\end{document}

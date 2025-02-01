@@ -1,0 +1,326 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathdots}
+\usepackage[pdftex]{graphicx}
+\usepackage{fancyhdr}
+\usepackage[margin=1in]{geometry}
+\usepackage{multicol}
+\usepackage{bm}
+\usepackage{listings}
+\usepackage[table]{xcolor}
+\usepackage{pdfpages}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{enumitem}
+\usepackage[T1]{fontenc}
+\usepackage{inconsolata}
+\usepackage{framed}
+\usepackage{wasysym}
+\usepackage[thinlines]{easytable}
+\usepackage{hyperref}
+\usepackage{minted}
+\usemintedstyle{perldoc}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=blue,
+}
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+\newcommand{\rightqed}{
+\begin{flushright}
+$\blacksquare$
+\end{flushright}
+}
+
+\title{CSCI 6690 Spectral Graph Theory Homework 2\\Elementary properties of the graph Laplacian}
+\author{Kushajveer Singh}
+\date{}
+
+\begin{document}
+\maketitle
+
+% Start problem 1
+\subsection*{Problem 1}
+\textit{
+    Suppose that $G$ and $G'$ have the same vertices and edges, but the orientations of the edges may not agree. Prove that $L_G = L_{G'}$
+}
+
+\noindent\textbf{Solution:}
+
+Consider the graphs $G$ and $G'$. Let $V$ be the common vertex set of $G$ and $G'$. Let $E$ be the edge set of $G$ and $E'$ be the edge set of $G'$. Let $x \in \mathbb{R}^{|V|}$, where $|V|$ represents the number of vertices in $V$.
+
+The Laplacian quadratic form of $G$ and $G'$ is given as
+\begin{align}
+    \langle x, L_Gx \rangle &= \sum \limits_{i=1}^{|E|} (x_{head(i)} - x_{tail(i)})^2 \label{eq:1} \\
+    \langle x, L_{G'}x \rangle &= \sum \limits_{i=1}^{|E'|} (x_{head(i)} - x_{tail(i)})^2 \label{eq:2}
+\end{align}
+
+From the problem statement, the only difference in $G$ and $G'$ is in the orientations of the edges. So consider an edge $j' \in E'$ which is flipped w.r.t. to $j \in E$ (Here edge $j$ connects the same vertices in $G$ and $G'$, the only difference is which vertex is the head and tail of the edge). This implies for edge $j'$
+\begin{align}
+    x_{head(j')} &= x_{tail(j)} \label{eq:3}\\
+    x_{tail(j')} &= x_{head(j)} \label{eq:4}
+\end{align}
+
+and, for the unflipped edges ($i \in E, i' \in E')$ we have,
+\begin{align}
+    x_{head(i')} &= x_{head(i)} \label{eq:5}\\
+    x_{tail(i')} &= x_{tail(i)} \label{eq:6}
+\end{align}
+
+This implies that for unflipped edges,
+\begin{align}
+    (x_{head(i')} - x_{tail(i'})^2 = (x_{head(i)} - x_{tail(i)})^2 \label{eq:7}
+\end{align}
+
+and for flipped edges
+\begin{align*}
+    (x_{head(j')} - x_{tail(j'})^2 &= (x_{tail(j)} - x_{head(j)})^2 \\
+                                   &= (-1)^2(x_{head(j)} - x_{tail(j)})^2 \\
+                                   &= (x_{head(j)} - x_{tail(j)})^2 \label{eq:8} \numberthis
+\end{align*}
+
+Using the results from \eqref{eq:7} and \eqref{eq:8}, we observe that \eqref{eq:1} and \eqref{eq:2} are equal i.e.
+\begin{equation}
+    \langle x, L_Gx \rangle = \langle x, L_{G'}x \rangle \label{eq:10}
+\end{equation}
+
+$\vec{x}$ is the coordinate vector of the vertices i.e. $x_i$ is the coordinate of vertex $i$. This means $\vec{x}$ cannot be the zero-vector. So for \eqref{eq:10} to hold true, $L_G$ must be equal to $L_{G'}$ i.e $L_G = L_{G'}$. 
+
+Therefore, the graph laplacian of a graph does not depend on the orientation of the edges. \rightqed
+
+\newpage
+\subsection*{Problem 2}
+\textit{
+    Prove that $L_G = D_G - M_G$.
+}
+
+\noindent\textbf{Solution:}
+Consider the boundary map $\partial:\mathbb{R}^{|E|} \rightarrow \mathbb{R}^{|V|}$ for the graph $G(V,E)$. The graph laplacian ($L_G$) is defined as:
+\begin{align*}
+    L_G &= \partial\partial^T \\
+        &= \begin{bmatrix}
+            \partial_{1,1} & \hdots & \partial_{1,|E|} \\
+            \vdots         & \ddots & \vdots         \\
+            \partial_{|V|,1} & \hdots & \partial_{|V|,|E|} \\
+        \end{bmatrix}
+        \begin{bmatrix}
+            \partial_{1,1} & \hdots & \partial_{|V|,1} \\
+            \vdots         & \ddots & \vdots         \\
+            \partial_{1,|E|} & \hdots & \partial_{|V|,|E|} \\
+        \end{bmatrix} \\
+        &= \begin{bmatrix}
+            \sum\limits_{k=1}^{|E|} \partial_{1,k}\partial_{1,k} & \hdots & \sum\limits_{i=k}^{|E|} \partial_{1,k}\partial_{|V|,k} \\
+            \vdots & \ddots & \vdots \\
+            \sum\limits_{k=1}^{|E|} \partial_{|V|,k}\partial_{1,k} & \hdots & \sum\limits_{k=1}^{|E|} \partial_{|V|,k}\partial_{|V|,k} \numberthis\\
+        \end{bmatrix}
+\end{align*}
+
+Note: $\partial_{i,j} \in \{-1,0,1\}$
+
+(a) Consider the diagonal entries of $L_G$,
+\begin{equation}
+    L_{G_{i,i}} = \sum\limits_{k=1}^{|E|} \partial_{i,k}^2
+\end{equation}
+
+$\partial_{i,k}$ is 
+\begin{itemize}
+    \item 1 if vertex $i$ is head vertex of edge $k$
+    \item -1 if vertex $i$ is tail vertex of edge $k$
+    \item 0 is vertex $i$ is not a part of edge $k$
+\end{itemize}
+
+So $\sum\limits_{k=1}^{|E|} \partial_{i,k}^2$ is basically telling us to how many vertices is vertex $i$ connected to in the graph $G$ i.e. degree of vertex $i$ (the only valid values of $\partial_{i,k}^2$ are 0 and 1).
+
+If we consider the corresponding diagonal entries of the matrix $D_G - M_G$ where $D_G$ is the degree matrix of $G$ and $M_G$ is the adjacency matrix of $G$, we get
+\begin{align*}
+    D_{G_{i,i}} - M_{G_{i,i}} &= deg(vertex(i)) - M_{G_{i,i}} \\
+\end{align*}
+
+$M_{G_{i,i}} = 0$ as we are dealing with graphs without self-loops and thus we have $D_{G_{i,i}} - M_{G_{i,i}} = deg(vertex(i))$, implying
+\begin{equation}
+    L_{G_{i,i}}  = D_{G_{i,i}} - M_{G_{i,i}} \label{eq:12}
+\end{equation}
+
+(b) Consider the non-diagonal entries of $L_G$,
+\begin{equation}
+    L_{G_{i,j}} = \sum\limits_{k=1}^{|E|} \partial_{i,k}\partial_{j,k} \label{eq:13}
+\end{equation}
+
+For the product $\partial_{i,k}\partial_{j,k}$ we have the following possible outcomes
+\begin{enumerate}
+    \item $\partial_{i,k}=0\textit{ and }\partial_{j,k}=0 \rightarrow$ edge $k$ does not touch vertex $i$ and $j$
+    \item $\partial_{i,k}=0\textit{ and }\partial_{j,k}=1(\text{or}-1) \rightarrow$ edge $k$ does not touch $i$ but has $j$ as one of its head or tail vertex (and vice versa)
+    \item $\partial_{i,k}=1\textit{ and }\partial_{j,k}=-1 \rightarrow$ edge $k$ connects vertex $i$ and $j$ (and vice versa)
+    \item $\partial_{i,k}=1\textit{ and }\partial_{j,k}=1$ AND $\partial_{i,k}=-1\textit{ and }\partial_{j,k}=-1 \rightarrow$ Not possible, as by definition an edge can only have one head and one tail vertex.
+\end{enumerate}
+
+From the above four possible cases, we observe that the product is 0 for case 1 and 2 and the product is -1 for case 3.
+
+Now we have two possible cases
+\begin{enumerate}
+    \item vertex $i$ and $j$ are adjacent to each other. This means there exists only one edge between vertex $i$ and $j$, which implies $\sum\limits_{k=1}^{|E|} \partial_{i,k}\partial_{j,k}$ contains only one index ($=k'$) at which the product is non-zero and the product at index ($=k'$) is -1. So,
+    \begin{equation}
+        L_{G_{i,j}} = -1 \label{eq:14}
+    \end{equation}
+    
+    Considering the corresponding entries in $D_G - M_G$ we have
+    \begin{align*}
+        D_{G_{i,j}} - M_{G_{i,j}} &= \underbrace{0}_{\text{non-diagonal entries}\atop\text{of  degree-matrix are 0}} - \underbrace{1}_{\text{as $i$ and $j$ are}\atop\text{adjacent vertices}} \\
+                                  &= -1 \label{eq:15} \numberthis
+    \end{align*}
+    
+    This implies
+    \begin{equation}
+        L_{G_{i,j}} = D_{G_{i,j}} - M_{G_{i,j}} \label{eq:first}
+    \end{equation}
+    
+    \item vertex $i$ and $j$ are not-adjacent to each other i.e. no edge connects vertex $i$ and vertex $j$. In this case for every index ($=k$) the product would be 0. So,
+    \begin{equation}
+        L_{G_{i,j}} = 0 \label{eq:16}
+    \end{equation}
+    
+    Considering the corresponding entries in $D_G - M_G$ we have
+    \begin{align*}
+        D_{G_{i,j}} - M_{G_{i,j}} &= \underbrace{0}_{\text{non-diagonal entries}\atop\text{of  degree-matrix are 0}} - \underbrace{0}_{\text{as $i$ and $j$ are}\atop\text{non-adjacent vertices}} \\
+                                  &= 0 \label{eq:17} \numberthis
+    \end{align*}
+    
+    This implies
+    \begin{equation}
+        L_{G_{i,j}} = D_{G_{i,j}} - M_{G_{i,j}} \label{eq:second}
+    \end{equation}
+\end{enumerate}
+
+From \eqref{eq:12}, \eqref{eq:first}, \eqref{eq:second}, we come to the conclusion that,
+\begin{equation}
+    L_G = D_G - M_G
+\end{equation}
+
+\newpage
+\subsection*{Problem 3 (1)}
+\textit{
+    Prove $\lambda_1=0$
+}
+
+\noindent\textbf{Solution:}
+Let $x \in \mathbb{R}^{|V|}$ be the eigenvector with eigenvalue $\lambda_1$ of the symmetric matrix $L_G$. By definition,
+\begin{equation}
+    L_Gx = \lambda_1x
+\end{equation}
+
+We know $x$ cannot be equal to 0 (as eigenvectors by definition are nonzero). So suppose $\lambda_1 = 0$. This means there must exist a non-zero vector $x$ that satisfies $L_Gx = 0$. We know,
+
+\begin{align}
+    x^TL_Gx &= \sum\limits_{i=1}^{|E|}(x_{head(e_i)} - x_{tail(e_i)})^2
+\end{align}
+
+So for $x^TL_Gx$ to be equal to 0, we must have $\sum\limits_{i=1}^{|E|}(x_{head(e_i)} - x_{tail(e_i)})^2 = 0$, which implies $x_{head(e_i)} - x_{tail(e_i)} = 0$. This is only possible if $x$ is a constant vector ($\neq 0$).
+
+Therefore, for $\lambda_1=0$ any constant vector $x \in \mathbb{R}^V (\neq 0)$ can be used as eigenvector, which implies that every laplacian matrix must have the smallest eigenvalue equal to zero.
+
+\newpage
+\subsection*{Problem 3 (2)}
+\textit{
+    Prove that if $G$ has $d$ connected components, then $\lambda_1 = \lambda_2 = \hdots = \lambda_d = 0.$
+}
+
+\noindent\textbf{Solution:}
+Suppose $G$ has $d$ connected components. It means $G$ contains $d$ smaller disconnected subgraphs $G_1, \hdots, G_d$. Let $L_i, D_i, M_i \forall i \in [1,d]$ be the graph laplacian, degree matrix and adjacency matrix of $G_i$.
+
+The graph laplacian matrix of $G$ can be written as
+\begin{equation}
+    \begin{bmatrix}
+        L_1 & 0 & \hdots & 0 \\
+        0  & L_2 & \hdots & 0  \\
+        \vdots & \vdots & \ddots & \vdots \\
+        0 & 0 & \hdots & L_d \\
+    \end{bmatrix}
+    = 
+    \begin{bmatrix}
+        D_1 & 0 & \hdots & 0 \\
+        0  & D_2 & \hdots & 0  \\
+        \vdots & \vdots & \ddots & \vdots \\
+        0 & 0 & \hdots & D_d \\
+    \end{bmatrix}
+    \begin{bmatrix}
+        M_1 & 0 & \hdots & 0 \\
+        0  & M_2 & \hdots & 0  \\
+        \vdots & \vdots & \ddots & \vdots \\
+        0 & 0 & \hdots & M_d \\
+    \end{bmatrix} \label{eq:22}
+\end{equation}
+
+Suppose $d=2$. This means $G$ contains two sets of vertices $V_1$ and $V_2$ which are disconnected from each other. The adjacency matrix of $G$ can be written as (with clever choices of vertices such that first $|V_1|$ rows contain only vertices of $G_1$ and the next $|V_2|$ rows contain vertices of $G_2$.
+\begin{equation}
+    G = 
+    \begin{bmatrix}
+        M_1 & 0 \\
+        0  & M_2\\
+    \end{bmatrix}
+\end{equation}
+
+It is easy to see from the above matrix that no vertices in $M_1$ are connected to $M_2$ and vice versa. The same reasoning holds true for the degree matrix and laplacian matrix (as $L = D - G$).
+
+The above idea can be generalized to $d$ connected components, as shown in \eqref{eq:22}.
+
+Now, consider the following $d$ orthogonal vectors,
+\begin{equation}
+    \begin{bmatrix}
+        1 \\
+        0 \\
+        \vdots \\
+        0
+    \end{bmatrix},
+    \begin{bmatrix}
+        0 \\
+        1 \\
+        \vdots \\
+        0
+    \end{bmatrix},
+    \hdots,
+    \begin{bmatrix}
+        0 \\
+        0 \\
+        \vdots \\
+        1
+    \end{bmatrix}
+\end{equation}
+
+\textbf{Note:} 1 (at position $i$) represents a block of 1's of same size as number of rows in $L_i$ and the same is true for 0's. To make the notation easier let $x_i$ denote the vector with 1 at index $i, \forall i \in [1,d]$.
+
+\textbf{Proposition} $\forall i \in [1,d], x_i$ is an eigenvector of $L$ with eigenvalue $\lambda_i$ = 0.
+
+\textbf{Proof}
+
+Suppose $x_i$ is the eigenvector of $L$ with eigenvalue $\lambda_i$. By definition, we have
+\begin{equation*}
+    Lx_i = \lambda_i x_i
+\end{equation*}
+
+Multiplying both sides by $x_i^T$
+\begin{align*}
+    x_i^TLx_i &= x_i^T\lambda_i x_i \\
+              &= \lambda_i x_i^Tx_i \text{ ($\lambda_i$ is scalar)} \\
+              &= \lambda_i \text{ ($x_i^Tx_i = 1$)} \numberthis \label{eq:eigen}
+\end{align*}
+
+% Now proving \eqref{eq:25},
+Solving for $x_i^TLx_i$,
+\begin{align*}
+    x_i^TLx_i &= \sum\limits_{k=1}^d (x_{i_{head(k)}} - x_{i_{tail(k)}})^2 \\
+              &= \underbrace{\sum\limits_{k=1\atop k\neq i}^{d}(x_{i_{head(k)}} - x_{i_{tail(k)}})^2}_{x_{i_{head(k)}} = x_{i_{tail(k)}} = 0} + \underbrace{\sum\limits_{k=1}^{|V_i|}(x_{i_{head(k)}} - x_{i_{tail(k)}})^2}_{x_{i_{head(k)}} = x_{i_{tail(k)}} = 1} \\
+              &= 0 \numberthis \label{eq:26}
+\end{align*}
+
+Using above result in \eqref{eq:eigen} we get $\lambda_i = 0$. Therefore, we come to the conclusion that $x_i$ is an eigenvector of $L$ with eigenvalue = 0. This result holds true for every $i \in [1,d]$.
+
+Also, $x_i$ and $x_j$, $i\neq j$ are orthogonal vectors. This means that $L$ has d orthogonal eigenvectors that have eigenvalue equal to 0. Thus implying the first d eigenvalues of $L$ are 0 i.e. $\lambda_1 = \lambda_2 = \hdots = \lambda_d = 0$.
+
+\end{document}

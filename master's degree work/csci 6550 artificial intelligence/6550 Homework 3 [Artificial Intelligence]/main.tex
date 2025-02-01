@@ -1,0 +1,215 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathdots}
+\usepackage[pdftex]{graphicx}
+\usepackage{fancyhdr}
+\usepackage[margin=1in]{geometry}
+\usepackage{multicol}
+\usepackage{bm}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{pdfpages}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{ulem}
+\usepackage{enumitem}
+\usepackage[T1]{fontenc}
+\usepackage{inconsolata}
+\usepackage{framed}
+\usepackage{wasysym}
+\usepackage[thinlines]{easytable}
+\usepackage{hyperref}
+\usepackage{minted}
+\usemintedstyle{perldoc}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=blue,
+}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=4
+}
+\lstset{style=mystyle}
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+\newcommand{\rightqed}{
+\begin{flushright}
+$\blacksquare$
+\end{flushright}
+}
+\newcommand\redsout{\bgroup\markoverwith{\textcolor{red}{\rule[0.5ex]{2pt}{0.4pt}}}\ULon}
+\newcommand{\solution}{\noindent\textbf{Solution:}\\\indent}
+\usepackage{graphics}
+\usepackage{subfig}
+\graphicspath{ {./images/} }
+
+\title{6550 Artificial Intelligence Homework 3}
+\author{Kushajveer Singh}
+\date{}
+
+\begin{document}
+\maketitle
+
+\subsection*{Problem 1}
+\solution
+We add $\neg a$ to $KB$ and apply resolution. To show $KB \models a$, it is sufficient to find a rule that reduces to $a$, so that when we take the pair ($a$, $\neg a$) we get an empty clause which means $\neg a$ cannot be in $KB$ i.e. we get a contradiction which means $KB \models a$ equates to True.
+
+First, we add $\neg a$ in $KB$. And now we apply resolution. The following pairs of rules are considered and the resultant rule is added to $KB$
+\begin{itemize}
+    \item $(\neg c \lor e), (c) = (e)$
+    \item $(f \lor \neg c), (c) = (f)$
+    \item $(\neg e \lor b \lor \neg f), (e) = (b \lor \neg f)$
+    \item $(b \lor \neg f), (f) = (b)$
+    \item $(d \lor \neg c \lor \neg b), (b) = (d \lor \neg c)$
+    \item $(d \lor \neg c), (c) = (d)$
+    \item $(a \lor \neg b \lor \neg d), (b) = (a \lor \neg d)$
+    \item $(a \lor \neg d), (d) = (a)$
+    \item $(a), (\neg a) = ()$
+\end{itemize}
+
+We get a contradiction in the last pair, which means $\neg a$ cannot be in KG which means $KG \models a$ is True.
+
+\newpage
+\subsection*{Problem 2}
+\solution
+\begin{itemize}
+    \item Constants = a
+    \item Variables = x, y
+    \item Predicates = P, Q
+\end{itemize}
+
+Consider the following interpretation $\mathbb{I} = \langle D, I \rangle$, where $D = \{1, 2\}$ and $I$ is as follows
+\begin{itemize}
+    \item I[a] = 1
+    \item I[P] = \{1\}
+    \item I[Q] = \{(1,2)\}
+\end{itemize}
+
+Checking if the statements evaluate to true for the above interpretation
+\begin{itemize}
+    \item $P(a)$
+        
+        For $P(a)$, $a$ is mapped to 1 and the extension of $P$ is $\{1\}$. Since the thing $a$ denotes is in the extension of $P$, $P(a)$ is true on $\mathbb{I}$
+        
+    \item $\forall x(P(x) \implies \exists y(P(y)\land Q(x, y)))$
+    
+        Checking for for all values in the domain.
+        \begin{itemize}
+            \item For $x = 1$. We get $P(1) = True$ and no value of $y$ makes the implication True, so out interpretation $\mathbb{I}$ is wrong. I have checked for all combinations of domain and was not able to find any set of domain that satisfies the given logic while keeping all other logic also true. The reason for this is to make the last logic true, we cannot have $Q(x, y)$ $Q(y, x)$ in the domain of $Q$.
+            \item For $x = 2$. We get $P(2) = False$ and none of the values in domain satisfy the $\exists y(P(y)\land Q(x, y)))$, which makes is False. And the implication equates to True.
+        \end{itemize}
+        
+        As the implication is not true for all values in the domain $D$, $\forall x(P(x) \implies \exists y(P(y)\land Q(x, y)))$ is false on $\mathbb{I}$
+        
+    \item $\neg\exists xQ(x, x)$
+        
+        For $x=1$, we get $Q(1,1) = false$ and for $x=2$ we get $Q(2,2) = false$. So there is no value in the domain that satisfies $\exists xQ(x, x)$, thus the negation of this i.e. $\neg\exists xQ(x, x)$ is true on $\mathbb{I}$
+        
+    \item $\forall x\forall y(Q(x, y)\implies\neg Q(y, x))$
+    
+        Constructing the truth table
+        
+        \begin{tabular}{|c|c|c|c|c|}
+            \hline
+            x & y & $Q(x, y)$ & $\neg Q(y, x)$ & $Q(x, y)\implies\neg Q(y, x)$\\
+            \hline
+            1 & 1 & F & T & T\\
+            \hline
+            1 & 2 & T & T & T\\
+            \hline
+            2 & 1 & F & F & T\\
+            \hline
+            2 & 2 & F & T & T\\
+            \hline
+        \end{tabular}
+        
+        From the above truth table we can see that $\forall x\forall y$ the logic holds true, therefore $\forall x\forall y(Q(x, y)\implies\neg Q(y, x))$ is true on $\mathbb{I}$.
+\end{itemize}
+
+\newpage
+\subsection*{Problem 3}
+\solution
+\begin{align*}
+    \forall x(P(x) \iff \exists y(Q(y) \land R(x,y,a)))
+\end{align*}
+
+Eliminate biconditional and implications.
+\begin{align*}
+    \forall x((P(x) \implies \exists y(Q(y) \land R(x,y,a))) \land (\exists y(Q(y) \land R(x,y,a)) \implies P(x))) \\
+    \forall x((\neg P(x) \lor (\exists y(Q(y) \land R(x,y,a)))) \land (\neg(\exists y(Q(y) \land R(x,y,a))) \lor P(x)))
+\end{align*}
+
+Move negation inwards
+\begin{align*}
+    \forall x((\neg P(x) \lor (\exists y(Q(y) \land R(x,y,a)))) \land ((\forall y (\neg Q(y) \lor \neg R(x,y,a))) \lor P(x)))
+\end{align*}
+
+Standardize variables
+\begin{align*}
+    \forall x((\neg P(x) \lor (\exists y(Q(y) \land R(x,y,a)))) \land ((\forall z (\neg Q(z) \lor \neg R(x,z,a))) \lor P(x)))
+\end{align*}
+
+Skolemize
+\begin{align*}
+    \forall x((\neg P(x) \lor (Q(F(x) \land R(x,F(x),a))) \land ((\forall z (\neg Q(z) \lor \neg R(x,z,a))) \lor P(x)))
+\end{align*}
+
+Drop universal quantifiers
+\begin{align*}
+    (\neg P(x) \lor (Q(F(x) \land R(x,F(x),a))) \land ((\neg Q(z) \lor \neg R(x,z,a)) \lor P(x))
+\end{align*}
+
+Distribute $\lor$ over $\land$
+\begin{align*}
+    (\neg P(x) \lor Q(F(x)) \land (\neg P(x) \lor R(x,F(x),a)) \land (\neg Q(z) \lor \neg R(x,z,a) \lor P(x)
+\end{align*}
+
+\newpage
+\subsection*{Problem 4}
+\solution
+
+Converting the given set $S$ to CNF.
+\begin{align*}
+    P(a) \land (\forall x(\neg P(x) \lor P(s(x))) \land (\forall x(\neg P(x) \lor Q(x))) \land \neg Q(s(s(a)))
+\end{align*}
+
+Standardize variables
+\begin{align*}
+    P(a) \land (\forall x(\neg P(x) \lor P(s(x))) \land (\forall y(\neg P(y) \lor Q(y))) \land \neg Q(s(s(a)))
+\end{align*}
+
+Drop universal quantifiers
+\begin{align*}
+    P(a) \land (\neg P(x) \lor P(s(x)) \land (\neg P(y) \lor Q(y)) \land \neg Q(s(s(a)))
+\end{align*}
+
+We converted the given set $S$ of Horn clauses to CNF form. Now we apply resolution to derive the empty clause from S. To apply resolution we need to be given a statement, which we need to check if it belongs to the given set.
+
+From the question statement and checking the examples in Section 9.5 it is not clear how to apply resolution in this question.
+
+\end{document}

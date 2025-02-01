@@ -1,0 +1,103 @@
+\documentclass[10pt,twocolumn,letterpaper]{article}
+\usepackage{cvpr}              % To produce the CAMERA-READY version
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage[pagebackref,breaklinks,colorlinks]{hyperref}
+\usepackage[capitalize]{cleveref}
+\crefname{section}{Sec.}{Secs.}
+\Crefname{section}{Section}{Sections}
+\Crefname{table}{Table}{Tables}
+\crefname{table}{Tab.}{Tabs.}
+
+\begin{document}
+\title{Sarcasm Detection using Deep Learning}
+\author{
+    Kushajveer Singh\\
+    University of Georgia\\
+    {\tt\small ks56866@uga.edu}
+    \and
+    Padmanaban\\
+    University of Georgia\\
+    {\tt\small ph6913@uga.edu}
+    \and
+    Shubhi Shrivastava\\
+    University of Georgia\\
+    {\tt\small ss71980@uga.edu}
+}
+\maketitle
+
+\begin{abstract}
+    Natural Language Processing (NLP) has seen remarkable progress in recent years and in this paper we extend the NLP approaches to a new direction of sarcasm detection with context. As sarcasm detection with context is still a new field we compare modern Transformer based models to the classic machine learning models like Support Vector Machines (SVM) and Random Forest. Our best BERT model achieves 93\% accuracy on the \textit{reddit} dataset.
+\end{abstract}
+
+\section{Introduction}
+\label{sec:intro}
+
+Language model pre-training using self-learning has paved the way for the recent progress in Natural Language Processing (NLP). Many self-training methods have been introduced like BERT \cite{paper_01}, GPT \cite{paper_02} and RoBERTa \cite{paper_03}, which have brought significant improvements over the previous methods like LSTM \cite{paper_04}, ELMo \cite{paper_05}. In this paper, we try to extend the recent success of these methods to sarcasm detection.
+
+Sarcasm detection can be considered as a form of irony that is intended to make fun of someone. Sarcasm is a language in which an individual tells the message implicitly. It has an ambiguous nature, as a person may mean the opposite of what they say. The use of sarcasm is increasing everyday in news, blogs, texts etc. Irony and sarcasm are often confused with each other but are quite different. Sarcasm can be further seen as a disparity of sentiments:"I love getting spam emails", a means of conveying emotions:"I'm so pleased mom woke me up with vacuuming this morning", as a form of written expression:"I love it when my friends ignore me", as a function of expertise:"I love it when I'm called at 4:00am as my neighbor's kid can't sleep" or behavior-based sarcasm. 
+
+In summary, we discuss the problem of sarcasm detection using context and train two classic machine learning models and a transformer model. We then compare the performance of these models using an open-source \textit{reddit} dataset.    
+
+\section{Related Work}
+
+A significant amount of work has been done in sarcasm detection which made heavy use of preprocessing to isolate the presence of certain words which can help in predicting if the given text is sarcastic or non-sarcastic. Some of the prior work has been summarized in \cite{paper_06}. Another excellent survey in the field are done by \cite{paper_07} and \cite{paper_08}.
+
+[TODO]
+
+\section{Method}
+Our problem statement can be summarized as given a comment from some user and the context surrounding the comment our goal is to classify the comment as sarcastic or not-sarcastic. We first discuss the datasets we considered and in the section after that we discuss the models we used.
+
+\subsection{Datasets}
+We considered many dataset including IAC\_V2 \cite{paper_09}, Frackling Twitter \cite{paper_10}, \cite{paper_11}, \cite{paper_12} and \cite{paper_06}. \cite{paper_09} required permission from the authors and considering the fact it is a five year old dataset we did not use it. \cite{paper_10} is a twitter based dataset. But the dataset does not provide the original text, rather the twitter IDs due to privacy reasons. As most of the twitter IDs were deleted we could not collect the dataset. \cite{paper_11} can be considered as a subset of \cite{paper_06} which is the dataset we used in the paper.
+
+\cite{paper_06} provides \textit{reddit} dataset which consists of 4400 training samples and 1800 test samples. An example of a sample is shown next.
+
+\{"label": "SARCASM", "response": "Did Kelly just call someone else messy?", "context": ["X is looking a First Lady should", "didn't think it was tailored enough"]\}
+
+In the above example, "Did Kelly just call someone else messy?" is a response to "X is looking a First Lady should" which in turn is a response to "Didn't think it was tailored enough". As we can see from the above example, we can either directly try to classify the response as sarcastic or not-sarcastic or we can use the provided context to help the decision making process.
+
+\subsection{Models}
+We used three models, SVM \cite{paper_13}, RandomForest \cite{paper_14} and BERT \cite{paper_01}. Next, we give a brief overview of these models.
+
+\textbf{SVM}, which stands for Support Vector Machine is a supervised learning model. It can be used for classification, regression and outliers detection tasks. Some of the benefits of implementing SVM are that it is quite effective when there is a clear level of separation and in high dimensional spaces. The cons include parameter complexity, limited accuracy over complex data. It is more suitable for smaller datasets. In this project we have  implemented SVM in python and integrated using google colab. We used numpy, pandas, nltk and sklearn libraries. The data pre-processing steps followed include - removal of blank rows, stop words and non-alpha text, tokenization and word lemmatization. The train-test ratio followed was 30:70. Then we encoded the target variable to transform the categorical data into numercial type tha the model can understand. This was followed by word-vectorization, which involves converting text data into feature vectors. We used TF-IDF for this purpose. 
+
+
+\textbf{RandomForest} Random forest is a machine learning algorithm which can be used for both classification as well as regression tasks as far as the data is concerned.The main advantage of using random forest is it can be used for both categorical and numerical data.In this experiment the data was split as 70-30 for testing as well as training. The classifier gave an output accuracy of 64 percentage. The data pre-processing was done by removing punctuations, stop words et al. Other techniques such as count vectorization and the bag of words model was also used in the random forest algorithm is that it is very time consuming as well as computationally intensive.It is more of a black-box algorithm where you have little control over what the algorithm does.
+
+\textbf{BERT}. BERT is a mulit-layer bidirectional transformer encoder model. BERT-base was used in this paper which consists of 12-layers, 12-attention-heads and 110 million parameters. To train a classifier model on top of BERT-base, we extract the contextualized embeddings from the model and feed it into a fully connected layer which is used to solve the given task of binary classification.
+
+\section{Experiments}
+We split the training dataset into 70\% train and 30\% validation and used this validation split to do hyperparameter tuning. After getting the best hyperparameter values the models were trained on the full training dataset (including the validation split). To test the models we used the test dataset provided with the reddit dataset and report the accuracy metric. As the dataset was fairly balanced, we decided to only use the accuracy metric. Google colab was used to train the models. For the model implementations, we used scikit-learn for implementing SVM and RandomForest. transformers \cite{paper_15} library by huggingface was used to implement the BERT model.
+
+To incorporate context into the input we concatenated the context with the response. For the context depth of two was chosen as this gave the best results on the validation split. The results are shown in Table \ref{table_01}. As we can see from Table \ref{table_01} the BERT model outperformed the standard machine learning models by a significant margin but this comes at the cost of extra memory and increased training time. 
+
+\begin{table}
+  \centering
+  \begin{tabular}{@{}lc@{}lc@{}}
+    \toprule
+    Method & Accuracy (in \%) \\
+    \midrule
+    SVM & 61 \\
+    Random Forest & 64 \\
+    BERT & \textbf{93} \\
+    \bottomrule
+  \end{tabular}
+  \caption{Accuracy of models on reddit dataset in shown. As we can see the BERT model significantly outperformed the standard machine learning models by a significant margin. For context, we used a depth of 2.}
+  \label{table_01}
+\end{table}
+
+\section{Conclusion}
+
+The problem of sarcasm detection was discussed in the paper. Sarcasm detection is a hard problem as it is difficult to distinguish it from irony. To do this we extended the classic machine learning models and a transformer based model to use the context while making the prediction. The context combined with the input response can provide the necessary information on whether the person is being ironic or sarcastic. We found the BERT model significantly outperformed the classic machine learning models.
+
+For further future work can be explored by using a combination of the other deep neural network models such as Bidirectional LSTM models. Generating a sarcastic response for an input is also one of the interesting ventures to peer into for the project.
+
+{\small
+\bibliographystyle{ieee_fullname}
+\bibliography{egbib}
+}
+
+\end{document}

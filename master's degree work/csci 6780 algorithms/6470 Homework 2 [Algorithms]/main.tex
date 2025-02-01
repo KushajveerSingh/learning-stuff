@@ -1,0 +1,407 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathdots}
+\usepackage[pdftex]{graphicx}
+\usepackage{fancyhdr}
+\usepackage[margin=0.8in]{geometry}
+\usepackage{multicol}
+\usepackage{bm}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{pdfpages}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{enumitem}
+\usepackage[T1]{fontenc}
+\usepackage{inconsolata}
+\usepackage{framed}
+\usepackage{wasysym}
+\usepackage[thinlines]{easytable}
+\usepackage{hyperref}
+\usepackage{minted}
+\usemintedstyle{perldoc}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=blue,
+}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=4
+}
+\lstset{style=mystyle}
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+\newcommand{\rightqed}{
+\begin{flushright}
+$\blacksquare$
+\end{flushright}
+}
+\newcommand{\solution}{\noindent\textbf{Solution:}\\\indent}
+\usepackage{graphics}
+\usepackage{subfig}
+\graphicspath{ {./images/} }
+
+\title{CSCI 6470 Algorithms assignment 2}
+\author{Kushajveer Singh}
+\date{}
+
+\begin{document}
+\maketitle
+
+% Start problem 1
+\subsection*{Problem 1}
+\textit{
+    Prove $2n^2+2n-4 = \Omega (n^2)$
+}
+
+\solution
+By definition of big-omega we need to prove that for some constant $c>0$ and $k>0$ the following inequality holds,
+\begin{equation}
+    2n^2+2n-4 \geq cn^2 \text{ , $\forall n \geq k$} \label{eq:1_1}
+\end{equation}
+
+As $n$ can only take non-negative values, we try to find the minimum $n$ for which the inequality holds
+\begin{align*}
+    n=0 \rightarrow 2(0)+2(0)-4 &= -4 \geq 0 \text{ (not possible)} \\
+    n=1 \rightarrow 2(1)+2(1)-4 &= 0 \geq c \text{ (not possible)} \\
+    n=2 \rightarrow 2(4)+2(2)-4 &= 8 \geq 4c
+\end{align*}
+
+As $2n^2+2n-4$ is monotonically increasing function the inequality \eqref{eq:1_1} would hold true for all values $\geq 2$. Therefore, $k=2$.
+
+Now suppose $c=2$. We try to find if the inequality \eqref{eq:1_1} holds true
+\begin{align*}
+    2n^2+2n-4 &= 2n^2 + (2n - 4) \\
+              &\geq 2n^2 \text{ ($n \geq 2\implies 2n-4 \geq 0$)}\\
+              &= \Omega(n^2)
+\end{align*}
+
+Therefore, we found for $k=2$, $c=2$, the inequality \eqref{eq:1_1} holds true, which implies $2n^2+2n-4 = \Omega(n^2)$.
+\rightqed
+
+\newpage
+\subsection*{Problem 2}
+\textit{
+    Find $T(n)$ when $SELECT(A,i)$ groups by 7 elements.
+}
+
+\solution
+The pseudo code for the modified $SELECT(A,n,k)$ is shown below. Some of the key points are
+\begin{itemize}
+    \item Line 2: There is nothing special about using base case = 196.
+    \item Line 5: The median value of an array with 7 elements occurs at the fourth index.
+    \item Line 6: The median of medians occurs at index $n/14$.
+    \item Line 10,11: The size of splits is discussed after the pseudo code
+\end{itemize}
+
+\begin{lstlisting}[title=Modified $SELECT$ to group by 7 elements, mathescape=true]
+SELECT(A,n,k)
+    if n < 196, simply sort $A$ and return A[k]; $\leftarrow c_1$
+    Find a pivot
+        group elements in $A$ into groups of 7 elements; $\leftarrow \leq c_2n$
+        place $4^{th}$ largest elements from all groups in list $M$;$\leftarrow \leq c_3n$
+        $x = SELECT(M, \frac{n}{7}, \frac{n}{14})$; $\leftarrow T(n/7)$
+        let $r = rank(x)$ in $A$; $\leftarrow \leq c_4n$
+    if k = r, return A[r];  $\leftarrow c_5$
+    partition $A$ into $A_1 = \{y: y\leq x\}$, $A_2 = \{z: x < z\}$; $\leftarrow \leq c_6n$
+    if k < r, return $SELECT(A_1, r-1, k)$;  $\leftarrow T(4n/14)$
+    else return $SELECT(A_2, n-r, k-r)$;   $\leftarrow T(10n/14)$
+\end{lstlisting}
+
+Size of partition $A_1$ can be determined using the following logic:
+\begin{itemize}
+    \item There are half of $n/7$ groups in the set, which means $n/14$
+    \item From every set we take 4 elements resulting in $4n/14$ elements
+    \item For the set which contains median of medians, we need to subtract 1 (as from that set we take only 3 elements)
+\end{itemize}
+
+Therefore, the total number of elements in set $A_1$ is
+\begin{equation}
+    |A_1| \geq 4n/14 -1
+\end{equation}
+
+The number of elements in set $A_2$ can be determined using the fact $|A_1| + 1 + |A_2| = n$, which gives us
+\begin{equation}
+    |A_2| \leq 10n/14
+\end{equation}
+
+The recurrence $T(n)$, is given as follows
+\begin{align}
+    T(n) &\leq
+    \begin{cases}
+        c_1 & n < 196 \\
+        T(n/7) + max\{T(4n/14), T(10n/14)\} + an + b & n \geq 196
+    \end{cases} \\
+    \implies T(n) &\leq
+    \begin{cases}
+        c_1 & n < 196 \\
+        T(2n/14) + T(10n/14) + an + b & n \geq 196
+    \end{cases}
+\end{align}
+
+In the above recurrence, $a = c_2+c_3+c_4+c_6$, $b=c_5$ and we use the fact that $T(n)$ is a monotonically increasing function which means $T(10n/14) > T(4n/14)$.
+
+\newpage
+\subsection*{Problem 3}
+\textit{
+    How many possible outcomes does the problem Sort Binary have on the input of n elements?
+}
+
+\solution
+Dropping the comma for cleaner notation (00 means the array [0,0]). Manually computing the outcomes for first few $n$, we get
+\begin{itemize}
+    \item n=1: $(0,1)$ 1 outcome required
+    \item n=2: $(00, 01, 11), (11)$ 2 outcomes required
+    \item n=3: $(000,001,011), (100, 101, 111), (011), (111)$ 4 outcomes required
+\end{itemize}
+
+From the above computation, the following pattern is observed for $n=3$. For every set of elements in $n=2$ we obtain two new sets for which we need 2 outcomes. To be more clear,
+\begin{itemize}
+    \item $(00, 01, 11) \rightarrow (000, 001, 011)$ and $(100, 101, 111)$
+    \item $(11) \rightarrow (011)$ and $(111)$
+\end{itemize}
+
+From this observation we can guess that $SortBinary(n)$ requires $2^{n-1}$ possible outcomes. The idea of the proof of this statement is as follows
+\begin{itemize}
+    \item Let $x$ represent the set of all elements represented by one of the outcome's of $SortBinary(n-1)$.
+    \item Now $SortBinary(n)$ has to accomodate $0x$ and $1x$ (where $0x$ means $0$ is added to the left of all elements in $x$).
+    \item It is now common observation that we need two outcomes to represent $0x$ and $1x$. And this gives us the intuition as to why the number of possible outcomes in $SortBinary(n)$ are double of number of possible outcomes in $SortBinary(n-1)$. 
+\end{itemize}
+
+Now we need to determine the lower bound on the height of a decision tree that has $2^{n-1}$ leaves to sort an array of length $n$ containing binary digits.
+
+In a complete binary tree of $l$ leaves, depth $d \geq \log_2l$, which implies Sort Binary requires $\geq \log_22^{n-1} = \Omega(n)$ comparisons.
+
+\newpage
+\subsection*{Problem 4}
+\textit{
+    Fill the DP table and show the shortest path.
+}
+
+\solution
+
+The main table that stores the distance is shown below. \\
+
+\begin{tabular}{|c|c|c|}
+\hline
+& TableA & TableB \\
+\hline
+start & \multicolumn{2}{c|}{} \\
+\hline
+i=1 & 10 & 12 \\
+\hline
+i=2 & min(14,19)=14 & min(19,14)=14 \\
+\hline
+i=3 & min(19,16)=16 & min(18,24)=18 \\
+\hline
+i=4 & min(19,24)=19 & min(21,19)=19 \\
+\hline
+finish & \multicolumn{2}{c|}{min(29,26)=26} \\
+\hline
+\end{tabular} \\ \\
+
+The table to store information about where each cell is computed from is shown below \\
+
+\begin{tabular}{|c|c|c|}
+\hline
+& PathA & PathB \\
+\hline
+start & \multicolumn{2}{c|}{} \\
+\hline
+i=1 & $\swarrow$ & $\nwarrow$ \\
+\hline
+i=2 & $\nwarrow$ & $\swarrow$ \\
+\hline
+i=3 & $\swarrow$ & $\nwarrow$ \\
+\hline
+i=4 & $\nwarrow$ & $\swarrow$ \\
+\hline
+finish & \multicolumn{2}{c|}{$\swarrow$} \\
+\hline
+\end{tabular} \\
+
+The shortest path from the start station to the finish station is
+\begin{equation}
+    start \rightarrow A1 \rightarrow A2 \rightarrow B3 \rightarrow B4 \rightarrow finish
+\end{equation}
+
+\newpage
+\subsection*{Problem 5}
+\textit{
+    Find the recursive functions.
+}
+
+\solution
+Notation:
+\begin{itemize}
+    \item $d(A_{i-1}, A_i)$: cost of edge from $A_{i-1}$ to $A_i$ and same for $B_i$
+    \item $w(A_{i-2}, A_i)$: cost of edge from $A_{i-2}$ to $A_i$ and same for $B_i$
+\end{itemize}
+
+The recursive function $DToA(i)$ is given as
+\begin{equation}
+    DToA(i) = 
+    \begin{cases}
+        d(start, A_1) & i=1 \\
+        \min\begin{cases}
+            DToA(1) + d(A_1, A_2) \\
+            DToB(1) + d(B_1, A_2)
+        \end{cases} & i=2 \\
+        \min\begin{cases}
+            DToA(i-1) + d(A_{i-1}, A_i) \\
+            DToB(i-1) + d(B_{1-1}, A_i) \\
+            DToA(i-2) + w(A_{i-2}, A_i)
+        \end{cases} & i\geq3
+    \end{cases}
+\end{equation}
+
+The recursive function $DToB(i)$ is given as
+\begin{equation}
+    DToA(i) = 
+    \begin{cases}
+        d(start, B_1) & i=1 \\
+        \min\begin{cases}
+            DToA(1) + d(A_1, B_2) \\
+            DToB(1) + d(B_1, B_2)
+        \end{cases} & i=2 \\
+        \min\begin{cases}
+            DToA(i-1) + d(A_{i-1}, B_i) \\
+            DToB(i-1) + d(B_{1-1}, B_i) \\
+            DToB(i-2) + w(B_{1-2}, B_i)
+        \end{cases} & i\geq3
+    \end{cases}
+\end{equation}
+
+\newpage
+\subsection*{Problem 6}
+\textit{
+    Fill table for $F(j)$ and show path from position 1 to position 10.
+}
+
+\solution
+The table containing the values of $F(i)$ is shown below. Also, the column $PrevIndex(i)$ stores the value from which the value of $F(i)$ was calculated.
+
+\begin{tabular}{|c|c|c|}
+\hline
+& F(i) & PrevIndex(i) \\
+\hline
+i=1 & 1 & start \\
+\hline
+i=2 & 1 & 1 \\
+\hline
+i=3 & 0 & NIL \\
+\hline
+i=4 & 0 & NIL \\
+\hline
+i=5 & 1 & 2 \\
+\hline
+i=6 & 1 & 5 \\
+\hline
+i=7 & 0 & NIL \\
+\hline
+i=8 & 1 & 6 \\
+\hline
+i=9 & 1 & 8 \\
+\hline
+i=10 & 1 & 9 \\
+\hline
+\end{tabular} \\
+
+The logic for computing $F(i)$ is as follows
+\begin{itemize}
+    \item i=1: Base case = 1
+    \item i=3,4,7: Obstacle is placed at these positions so $F(i) = 0$
+    \item i=2: $max(F(1)) = 1$
+    \item i=5: $max(F(4), max(F(3), F(2)) = 1$
+    \item i=6: $max(F(5), max(F(4), F(3)) = 1$
+    \item i=8: $max(F(7), max(F(6), F(5)) = 1$
+    \item i=9: $max(F(8), max(F(7), F(6)) = 1$
+    \item i=10: $max(F(9), max(F(8), F(7)) = 1$
+\end{itemize}
+
+NIL is used to denote the positions which cannot be reached from position 1. To break ties the following preference is used (highest first)
+\begin{itemize}
+    \item F(i-1) (if previous can be reached)
+    \item F(i-2) (the first value in JD)
+    \item F(i-3) (the second value in JD)
+\end{itemize}
+
+The sequence of moves for the robot to go from position 1 to position 10 based on the above table is shown below
+\begin{equation*}
+    1 \rightarrow 2 \rightarrow 5 \rightarrow 6 \rightarrow 8 \rightarrow 9 \rightarrow 10
+\end{equation*}
+
+\newpage
+\subsection*{Problem 7}
+\textit{
+    Shortest Robot route
+}
+
+\solution
+The function $F$ that solves the problem is
+\begin{equation*}
+    F(i) = \begin{cases}
+        0 & i=1 \\
+        \infty & O(i) = 1, i>1 \\
+        \min(F(i-1), \min\limits_{d\in JD}F(i-d)) + 1 & O(i) = 0, i>1
+    \end{cases}
+\end{equation*}
+
+$O(i) = 1$ if obstacle is placed at position at $i$ and 0 otherwise. Filling the table with values from Problem 6, we get
+
+\begin{tabular}{|c|c|c|}
+\hline
+& F(i) & PrevIndex(i) \\
+\hline
+i=1 & 0 & Start\\
+\hline
+i=2 & 1 & 1 \\
+\hline
+i=3 & $\infty$ & NIL \\
+\hline
+i=4 & $\infty$ & NIL \\
+\hline
+i=5 & 2 & 2 \\
+\hline
+i=6 & 3 & 5 \\
+\hline
+i=7 & $\infty$ & NIL \\
+\hline
+i=8 & 3 & 5\\
+\hline
+i=9 & 4 & 6 \\
+\hline
+i=10 & 4 & 8 \\
+\hline
+\end{tabular}
+
+So the shortest path to go from position 1 to position 10 is 
+\begin{equation}
+    1 \rightarrow 2 \rightarrow 5 \rightarrow 8 \rightarrow 10
+\end{equation}
+\end{document}

@@ -1,0 +1,111 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathdots}
+\usepackage[pdftex]{graphicx}
+\usepackage{fancyhdr}
+\usepackage[margin=1in]{geometry}
+\usepackage{multicol}
+\usepackage{bm}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{pdfpages}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{enumitem}
+\usepackage[T1]{fontenc}
+\usepackage{inconsolata}
+\usepackage{framed}
+\usepackage{wasysym}
+\usepackage[thinlines]{easytable}
+\usepackage{hyperref}
+\usepackage{minted}
+\usemintedstyle{perldoc}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=blue,
+}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=4
+}
+\lstset{style=mystyle}
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+\newcommand{\rightqed}{
+\begin{flushright}
+$\blacksquare$
+\end{flushright}
+}
+\newcommand{\solution}{\noindent\textbf{Solution:}\\\indent}
+\usepackage{graphics}
+\usepackage{subfig}
+\graphicspath{ {./images/} }
+
+\title{6550 Artificial Intelligence Project Proposal}
+\author{Kushajveer Singh}
+\date{}
+
+\begin{document}
+\maketitle
+
+\subsection*{Background}
+Self-Supervised Learning (SSL) has seen tremendous success in the past few years because SSL allows the machine learning model to learn from unlabeled data on its own. For this project, I want to write a survey paper that discusses the latest self-supervised approaches used in Graph Machine Learning (i.e. the data where the input is a graph). And, also provide comparisons of which approaches work better than others. In my literature review, I found some papers discuss these methods but there were no papers that did comparisons between the different methods.
+
+\subsection*{Objective}
+Provide a summary of different contrastive based self-supervised learning methods using in graph machine learning and provide comparisons among the different methods to show which method works better than other in a given scenario.
+
+\subsection*{Software development}
+I would use the following tools 
+\begin{itemize}
+    \item Python - The main programming language
+    \item PyTorch - Deep learning library that provides automatic differentiation on tensors
+    \item PyTorch Geometric - Library built on top of PyTorch that provides some helper methods to work with graph data, mainly access to the datasets, dataloaders and some common models used in the Graph Deep Learning literature
+    \item matplotlib - Will be used to plot the results
+    \item Hydra - Hydra will be used as a configuration management tool for the entire project
+\end{itemize}
+
+\subsection*{Paper Outline}
+Contrastive methods would be the main heading and under this I would discuss the use of different objective functions (Jensen-Shannon estimator, InfoNCE, Other) and methods for generating views of the graphs (Identical, Subgraphs, Augmentations). And then a section discussing the comparison results among the above methods.
+
+\subsection*{Relevant sources}
+\begin{itemize}
+    \item Deep graph contrastive representation learning arXiv:2006.04131
+    \item Graph contrastive learning with augmentations arxiv:2010.13902
+\end{itemize}
+
+I would refer to the reference sections of these papers for other relevant research in the field.
+
+\subsection*{Expected timeline}
+\begin{itemize}
+    \item April 13. Complete the literature review and finalize what are the main approaches I want to discuss based on the results presented in the paper.
+    \item April 17. Complete the setup of a draft repository that can be used for experimentation with different methods
+    \item April 29. Complete the experiment section.
+    \item May 5. Work on creating the report. Refine the experiment section if needed.
+\end{itemize}
+
+\end{document}

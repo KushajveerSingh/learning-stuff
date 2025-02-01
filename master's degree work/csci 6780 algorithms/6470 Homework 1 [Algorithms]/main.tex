@@ -1,0 +1,412 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathdots}
+\usepackage[pdftex]{graphicx}
+\usepackage{fancyhdr}
+\usepackage[margin=1in]{geometry}
+\usepackage{multicol}
+\usepackage{bm}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{pdfpages}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{enumitem}
+\usepackage[T1]{fontenc}
+\usepackage{inconsolata}
+\usepackage{framed}
+\usepackage{wasysym}
+\usepackage[thinlines]{easytable}
+\usepackage{hyperref}
+\usepackage{minted}
+\usemintedstyle{perldoc}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=blue,
+}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=4
+}
+\lstset{style=mystyle}
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+\newcommand{\rightqed}{
+\begin{flushright}
+$\blacksquare$
+\end{flushright}
+}
+\newcommand{\solution}{\noindent\textbf{Solution:}\\}
+
+\title{CSCI 6470 Algorithms assignment 1}
+\author{Kushajveer Singh}
+\date{}
+
+\begin{document}
+\maketitle
+
+% Start problem 1
+\subsection*{Problem 1}
+\textit{
+    Recursive algorithm to find if $n \in$ VSN.
+}
+
+\solution
+Let $n \in$ VSN ($n > 1$). $n$ is defined as follows 
+\begin{align*}
+    n &= 3*predecessor(n) + 5 \\
+    n - 5 &= 3*predecessor(n) \numberthis \label{eq:q_1}
+\end{align*}
+
+From \eqref{eq:q_1}, we observe that $n - 5$ must be a multiple of 3. We will use this observation in the algorithm.
+
+\begin{lstlisting}[title=Recursive algorithm to determine if $n \in VSN$, mathescape=true]
+CHECK_VSN (n);
+    // Stopping conditions
+    if n < 1, return "No"
+    if n = 1, return "Yes"
+    
+    // Recursively call CHECK_VSN
+    temp = n - 5
+    if temp%3 $\neq$ 0, return "No" //From$\eqref{eq:q_1}$, % is modulus operator
+    else CHECK_VSN (temp/3)
+\end{lstlisting}
+
+\newpage
+\subsection*{Problem 2 (1)}
+\textit{
+    What is functionality of algorithm $DoSomething$ do? How does it accomplish that?
+}
+
+\solution
+It sort's a list in non-decreasing order. The explanation is as follows.
+
+In Lines 2 FLAG is initalized to TRUE which means the code inside while loop would execute.
+
+In Line 3 we start a $while$ loop. By default, $flag$ is set to $FALSE$ in the loop, which means if the loop has to start the next iteration the line 12 ($flag = TRUE)$ must be executed, which in turn will only take place if line 7 ($if (A[i-1] > A[i]$) is executed. This gives us the stopping condition of the while loop. The list $A$ must be sorted in non-decreasing order for the $while$ loop to stop.
+
+Now consider the following list $A = B\circ max(A) \circ C$. Assume for now $B$ and $C$ are sorted lists of length $b$ and $c$ respectively and $max(A)$ is the maximum element in $A$ i.e. max element of $B$ and $C$ ($b + c + 1 = n)$.
+
+\textbf{Claim:} One iteration of $while$ loop would shift $max(A)$ to the last index of list.
+
+\textbf{Proof:} Expanding the list $A$, we get
+\begin{equation*}
+    \begin{matrix}
+        B_1 & \hdots & B_b & max(A) & C_1 & C_2 & \hdots & C_c
+    \end{matrix}
+\end{equation*}
+
+The first iteration of $while$ loop in $DoSomething$ will be as follows:
+\begin{itemize}
+    \item Index $2$ to $b+1$ $\rightarrow$ $if$ condition will always evaluate to false, as B is already sorted in non-decreasing order
+    \item Index $b+2$ (i.e. at $C_1$) $\rightarrow$ In this case the $if$ condition would be evaluated, as $max(A) > C_1$. The result would be $swap(max(A), C_1)$ and we would get $max(A)$ at index $b+2$.
+    \item Index $b+3$ (i.e. at $C_2$) $\rightarrow$ The previous step would repeat as $max(A) > C_2$, and $max(A)$ would be placed at index b+3
+    \item Till last index $\rightarrow$ The above process would repeat till the last index. And in the end $max(A)$ would be placed in the last index.
+\end{itemize}
+
+Because the $if$ condition evaluated to $TRUE$ during execution, $flag$ would have value $TRUE$, meaning there would be another iteration of while loop. In this case the max element in index $[1, n-1]$ would be shifted to index $n-1$. And this process will repeat till $A$ becomes sorted in non-decreasing order.
+
+We previously assumed that $B$ and $C$ are sorted, but now we consider the case when $B$ and $C$ are not sorted. In this case we can break the execution of the algorithm into two blocks as follows
+\begin{itemize}
+    \item List $B \rightarrow$ List $B$ can be recursively split into $B_1 \circ max(B) \circ B_2$ and the result would hold true.
+    \item List $max(A) \circ C \rightarrow$ In this case, the $max(A)$ would be shifted to the last position as discussed in the last proof.
+\end{itemize}
+
+% In summary, the working of $DoSomething$ algorithm can be shown recursively as follows,
+% \begin{align*}
+%     \underbrace{
+%     \begin{matrix}
+%         A_1 & \hdots & A_{i-1}
+%     \end{matrix}}_{\text{recursively split as $b \circ max \circ c$}}
+%     \underbrace{\underbrace{\begin{matrix}
+%         A_i
+%     \end{matrix}}_{max(A)}
+%     \begin{matrix}
+%         A_{i+1} & \hdots & A_n
+%     \end{matrix}
+%     }_\text{$A_i$ would be shifted to index $n$}
+% \end{align*}
+
+\newpage
+\subsection*{Problem 2 (2)}
+\textit{
+    Derive $T(n)$
+}
+
+\solution
+The running time of every step of $DoSomething$ is shown below.
+
+\begin{lstlisting}[title=Running time used by every step of $DoSomething$, mathescape=true]
+DoSomething (A, n);
+    n = length(A);                   $\longrightarrow c_1$
+    flag = TRUE;                     $\longrightarrow c_2$
+    while (flag) do                  $\longrightarrow \leq n\ times,\ each\ c_3$
+    {
+        flag = FALSE;                $\longrightarrow \leq n\ times, each\ c_4$
+        for i = 2 to n do            $\longrightarrow \leq n\ times,\ each\ c_5$
+            if (A[i-1] > A[i]) then  $\longrightarrow \leq n^2\ times,\ each\ c_6$
+            {
+                x = A[i-1];          $\longrightarrow \leq n^2\ times,\ each\ c_7$
+                A[i-1] = A[i];       $\longrightarrow \leq n^2\ times,\ each\ c_8$
+                A[i] = x ;           $\longrightarrow \leq n^2\ times,\ each\ c_9$
+                flag = TRUE;         $\longrightarrow \leq n^2\ times,\ each\ c_{10}$
+            }
+    }
+    return (A);                      $\longrightarrow c_{11}$
+\end{lstlisting}
+Summing up the running times used by all steps,
+\begin{align*}
+    T(n) &\leq c_1 + c_2 + nc_3 + nc_4 + nc_5 + n^2c_6 + n^2c_7 + n^2c_8 + n^2c_9 + n^2c_{10} + c_{11} \\
+         &= n^2(c_6 + c_7 + c_8 + c_9 + c_{10}) + n(c_3 + c_4 + c_5) + c_1 + c_2 \\
+         &= an^2 + bn + c \\
+         &\leq dn^2 \text{ (for some d>0)} \numberthis \label{eq:q_2} 
+\end{align*}
+
+From \eqref{eq:q_2}, we get $T(n) = O(n^2)$.
+
+\newpage
+\subsection*{Problem 3}
+\textit{
+    Find $c$ and $k$
+}
+
+\solution
+For base case $n=1$, we get
+\begin{align*}
+    T(1) &= 3(1)(\log1) + 4(1) - 2 \\
+         &= 2
+\end{align*}
+As $T(n) \leq cn\log n$, we get
+\begin{align*}
+    T(1) &\leq c(1)(\log1) \\
+    2 & \leq 0
+\end{align*}
+We get a contradiction, meaning it is a bad base case. So using $n=2$ as base case, we get
+\begin{align*}
+    T(2) &= 3(2)(\log2) + 4(2) - 2 \\
+         &= 12
+\end{align*}
+Using this in $T(n) \leq cn\log n$, we get
+\begin{align*}
+    T(2) &\leq c(2)(\log2) \\
+    12 &\leq 2c \\
+    \implies & c \geq 6 \numberthis \label{eq:q_3}
+\end{align*}
+From \eqref{eq:q_3}, we get the value of $c = 6$ and $k = 2$.
+
+\newpage
+\subsection*{Problem 4}
+\textit{
+    Find T(n) with mergesort split into 3 lists.
+}
+
+\solution
+Pseudo code for the modified merge sort is shown below
+\begin{lstlisting}[mathescape=true]
+MergeSort (x, start, end);
+    if start = end: return x, start, end       $\longleftarrow c_1$
+    else
+        first_index = (start+end)*(1/3)        $\longleftarrow c_2$
+        second_index = (start+end)*(2/3)       $\longleftarrow c_3$
+        MergeSort(x, start, first_index)       $\longleftarrow T(n/3)$
+        MergeSort(first_index+1, second_index) $\longleftarrow T(n/3)$
+        MergeSort(second_index+1, end)         $\longleftarrow T(n/3)$
+        Merge(x, start, end)                   $\longleftarrow \leq n$
+\end{lstlisting}
+
+The $Merge$ step (line 9) is linear because we can come up with $if-else$ conditions that can go though all possible outcomes and thus we would only require $O(1)$ time to fill an index of final array. As there are $n$ elements to be filled in the final array the time complexity becomes linear.
+
+The base case for the algorithm is when we have only one element and it takes constant time to sort a single element.
+
+The recurrence for the time function is
+\begin{equation}
+    T(n) = 
+    \begin{cases}
+    a & n = 1 \text{ ($a = c_1$)}\\
+    3T(n/3) + n + b & n \geq 3 \text{ ($b = c_2 + c_3$)}\\
+    \end{cases}
+\end{equation}
+
+\newpage
+\subsection*{Problem 5}
+\textit{
+    Binarysearch with split at one-third.
+}
+
+\solution
+The pseudo code for modified $BinarySearch$ is as follows
+\begin{lstlisting}[title=Modified binary search, mathescape=true]
+BinarySearch (x, i, j, key);
+    if i > j: return 0                       $\longleftarrow c_1$
+    else
+        k = (i+j)*(1/3)                      $\longleftarrow c_2$
+        if x[k] = key return k;              $\longleftarrow c_3$
+        else
+            if x[k] > key                    $\longleftarrow c_4$
+                BinarySearch(x, i, k, key)   $\longleftarrow T(n/3)$
+            else
+                BinarySearch(x, k+1, j, key) $\longleftarrow T(2n/3)$
+\end{lstlisting}
+
+The recurrence relation for BinarySearch thus is
+\begin{equation}
+    T(n) = 
+    \begin{cases}
+    a & n = 1 \text{ ($a = c_1$)}\\
+    max(T(n/3), T(2n/3)) + b & n \geq 2 \text{ ($b = c_2 + c_3 + c_4$)}\\
+    \end{cases}
+\end{equation}
+
+BinarySearch is a deterministic algorithm, which means there is no randomness involved and it is safe to say that $T(n) >= T(k) \forall n > k$. This means $T(2n/3) >= T(n/3)$. The recurrence relation thus becomes,
+\begin{equation}
+    T(n) = 
+    \begin{cases}
+    a & n = 1\\
+    T(2n/3) + b & n \geq 2\\
+    \end{cases}
+\end{equation}
+
+Time time complexity of original binary search is $O(\log_{2} n)$. Here the base 2 is used because the array is split into two equal parts. In the modified binary search algorithm, the array is split into 2/3 (worst case), thus the time complexity becomes $O(\log_{3/2} n)$. But we can remove constants from logarithm as we are using Big-O notation, so the time complexity essentially remains same i.e. $O(\log n$) of the modified binary search algorithm.
+
+\newpage
+\subsection*{Problem 6}
+\textit{
+    Prove T(n) = O(n)
+}
+
+\solution
+
+Given,
+\begin{align*}
+    T(n) = 
+    \begin{cases}
+    b & n \leq 4\\
+    T(n/2) + T(n/4) + n + a & n \geq 5\\
+    \end{cases}
+\end{align*}
+
+To prove, there exists some $c > 0$ for all $n \geq k$ s.t.
+\begin{equation*}
+    T(n) \leq cn
+\end{equation*}
+
+\textbf{Base case}:
+
+\begin{itemize}
+    \item $n=1$
+    \begin{align*}
+        T(1) &= b \leq c(1) \\
+        \implies c &\geq b \numberthis \label{eq:q_6_1}
+    \end{align*}
+    \item $n=2$
+    \begin{align*}
+        T(2) &= b \leq c(2) \\
+        \implies c &\geq b/2 \numberthis \label{eq:q_6_2}
+    \end{align*}
+    \item $n=3$
+    \begin{align*}
+        T(3) &= b \leq c(3) \\
+        \implies c &\geq b/3 \numberthis \label{eq:q_6_3}
+    \end{align*}
+    \item $n=4$
+    \begin{align*}
+        T(4) &= b \leq c(4) \\
+        \implies c &\geq b/4 \numberthis \label{eq:q_6_4}
+    \end{align*}
+\end{itemize}
+
+From \eqref{eq:q_6_1}, \eqref{eq:q_6_2}, \eqref{eq:q_6_3}, \eqref{eq:q_6_4} we come to the conclusion
+\begin{equation}
+    c \geq b \text{ and } k = 1\label{eq:q_6_6}
+\end{equation}
+
+\textbf{Assumption}:
+
+Assume the following,
+\begin{align}
+    T(n/2) &= O(n/2) \\
+    T(n/4) &= O(n/4)
+\end{align}
+
+\textbf{Induction}:
+
+\begin{align*}
+    T(n) &= T(n/2) + T(n/4) + n + a \\
+         &\leq c(n/2) + c(n/4) + n + a \\
+         &= cn/2 + cn/2 - cn/2 + cn/4 + n + a \\
+         &= cn - \underbrace{(cn/4 - n - a)}_{\text{$c>5$ makes this value $>0$}} \numberthis \label{eq:q_6_5}\\
+         &\leq cn \\
+         \implies T(n) &= O(n)
+\end{align*}
+
+In \eqref{eq:q_6_5}, if we set $c=5$ then the equation becomes $n/4 - a$. As n approaches infinity this term is positive.
+
+In \eqref{eq:q_6_5}, we assumed $c > 5$ but in \eqref{eq:q_6_6} we got $c > b$. So a stronger inequality would be
+\begin{equation}
+    c \geq max(b, 5)
+\end{equation}
+
+Therefore, $T(n) \leq cn\ \ c \geq max(b,5)\ and\ n \geq 1$.
+
+\newpage
+\subsection*{Problem 7}
+\textit{
+    Modify code of Partition.
+}
+
+\solution
+\begin{lstlisting}[title=Modified binary search, mathescape=true]
+Partition (x, p, r);
+    // Elements in [p, i] are less than pivot
+    // Elements in [i+1, i+count] are equal to pivot
+    // Remaining elements are greater than pivot
+    
+    x = A[r] // pivot element
+    i = p-1 
+    k = r-1
+    count = 1 // number of duplicate items
+    
+    for j from 1 to k
+        if A[j] < x
+            i = i + 1
+            exchange A[j] and A[i]
+        if A[j] = x
+            exchange A[j] and A[k]
+            j = j - 1 // Need to check for A[j] element again
+            k = k - 1
+            count = count + 1
+    
+    // Move the last count elements to the middle       
+    last = r
+    for j from i+1 to i+count
+        exchange A[j] and A[last]
+        last = last - 1
+    
+    return i,i+count
+\end{lstlisting}
+\end{document}

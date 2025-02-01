@@ -1,0 +1,290 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathdots}
+\usepackage[pdftex]{graphicx}
+\usepackage{fancyhdr}
+\usepackage[margin=1in]{geometry}
+\usepackage{multicol}
+\usepackage{bm}
+\usepackage{listings}
+\usepackage[table]{xcolor}
+\usepackage{pdfpages}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{enumitem}
+\usepackage[T1]{fontenc}
+\usepackage{inconsolata}
+\usepackage{framed}
+\usepackage{wasysym}
+\usepackage[thinlines]{easytable}
+\usepackage{hyperref}
+\usepackage{minted}
+\usemintedstyle{perldoc}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=blue,
+}
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+\newcommand{\rightqed}{
+\begin{flushright}
+$\blacksquare$
+\end{flushright}
+}
+\newcommand{\solution}{\noindent\textbf{Solution:}\\}
+
+\title{CSCI 6690 Spectral Graph Theory Homework 3\\Linear Algebra of Eigenvalues and Eigenvectors}
+\author{Kushajveer Singh}
+\date{}
+
+\begin{document}
+\maketitle
+
+% Start problem 1
+\subsection*{Problem 1}
+\textit{
+    Prove that if $M$ is symmetric and $\mu \neq \lambda$ then $\langle u,v\rangle = 0$.
+}
+
+\solution
+\begin{align*}
+    \langle u, v \rangle &= u^Tv \\
+    \lambda \langle u, v \rangle &= \lambda u^Tv \text{ (multiply both sides by $\lambda$)} \\
+                                 &= (\lambda u)^Tv \text{ (as $\lambda$ is a scalar)}\\
+                                 &= (Mu)^Tv \text{ (as $Mu = \lambda u$)} \\
+                                 &= u^TM^Tv \\
+                                 &= u^TMv \text{ ($M$ is symmetric)} \\
+                                 &= u^T\mu v \text{ (as $Mv = \mu v$)} \\
+                                 &= \mu (u^Tv) \text{ (as $\mu$ is a scalar)}\\
+                                 &= \mu \langle u, v \rangle \\
+    (\lambda - \mu)\langle u, v \rangle &= 0 \numberthis \label{eq:1_1}
+\end{align*}
+
+We know $\lambda \neq \mu$, therefore $\langle u, v \rangle = 0$ is the only solution of \eqref{eq:1_1}.
+
+\rightqed
+
+% Start problem 2
+\newpage
+\subsection*{Problem 2 (1)}
+\textit{
+    Prove $\langle u, v \rangle = \langle Qu, Qv \rangle$.
+}
+
+\solution
+\begin{align*}
+    \langle Qu, Qv \rangle &= (Qu)^T(Qv) \\
+                           &= u^TQ^TQv \\ 
+                           &= u^TIv \text{ ($Q$ is orthogonal matrix)}\\
+                           &= u^Tv \\
+                           &= \langle u, v \rangle \\
+    \implies \langle u, v \rangle &= \langle Qu, Qv \rangle \numberthis
+\end{align*}
+\rightqed
+
+\subsection*{Problem 2 (2)}
+\textit{
+    Prove $(QMQ^T)(Qv) = \lambda (Qv)$.
+}
+
+\solution
+\begin{align*}
+    (QMQ^T)(Qv) &= QM(Q^TQ)v \\
+                &= QMIv \text{ (as $Q$ is orthogonal)} \\
+                &= QMv \\
+                &= Q\lambda v \text{ (as $Mv=\lambda v$)} \\
+                &= \lambda Qv \text{ (as $\lambda$ is a scalar)} \\
+    \implies (QMQ^T)(Qv) &= \lambda (Qv) \numberthis
+\end{align*}
+\rightqed
+
+% Start problem 3
+\newpage
+\subsection*{Problem 3 (1)}
+\textit{
+    Prove permutation matrices are orthogonal
+}
+
+\solution
+
+Let $\Pi$ be a $n \times n$ permutation matrix. First observation, every row of $\Pi$ will have only one 1 and other entries would be 0. Second observation, all the rows of the matrix $\Pi$ are orthogonal w.r.t. each other. To prove $\Pi (\Pi)^T = I$.
+
+Let $X = \Pi(\Pi)^T$. Let $X_i$ be the i-th row of $X$ and let $\Pi_i$ be the i-th row of $\Pi$ $i \in [1,n]$.
+
+\begin{equation}
+    X = \begin{bmatrix}
+        \Pi_1 \\ \vdots \\ \Pi_n
+    \end{bmatrix}_{n \times n}
+    \begin{bmatrix}
+        \Pi_1^T & \hdots & \Pi_n^T
+    \end{bmatrix}_{n \times n}
+\end{equation}
+
+Now $X_i$ will be given as,
+\begin{equation}
+    X_i =
+    \begin{bmatrix}
+        \langle \Pi_i, \Pi_1^T \rangle, \hdots, \langle \Pi_i, \Pi_i^T \rangle, \hdots, \langle \Pi_i, \Pi_n^T \rangle
+    \end{bmatrix} \label{eq:2_1}
+\end{equation}
+
+Now, we use the fact that the rows of $\Pi$ are orthogonal to each other.
+\begin{equation}
+    \langle \Pi_i, \Pi_j^T \rangle = \begin{cases}
+    0 & i \neq j \\
+    1 & i = j
+    \end{cases} \label{eq:2_2}
+\end{equation}
+
+Using result from \eqref{eq:2_2} in \eqref{eq:2_1} we get,
+\begin{equation}
+    X_i =
+    \begin{bmatrix}
+        0, 0, \hdots, \underbrace{1}_{\text{i-th index}}, \hdots, 0
+    \end{bmatrix} \label{eq:2_3}
+\end{equation}
+
+From \eqref{eq:2_3}, we observe that the $X$ is the identity matrix as every row contains one 1 at the diagonal index and 0 every where else. Therefore, we come to the conclusion $\Pi(\Pi)^T = I$ i.e. permutation matrices are orthogonal.
+\rightqed
+
+\subsection*{Problem 3 (2)}
+\textit{
+    Prove $(\Pi M\Pi^T)(\Pi v) = \lambda (\Pi v)$.
+}
+
+\solution
+\begin{align*}
+    (\Pi M\Pi^T)(\Pi v) &= \Pi M(\Pi^T \Pi)v \\
+                &= \Pi MIv \text{ (as $\Pi$ is orthogonal)} \\
+                &= \Pi Mv \\
+                &= \Pi \lambda v \text{ (as $Mv=\lambda v$)} \\
+                &= \lambda \Pi v \text{ (as $\lambda$ is a scalar)} \\
+    \implies (\Pi M\Pi^T)(\Pi v) &= \lambda (\Pi v) \numberthis
+\end{align*}
+\rightqed
+
+% Start problem 4
+\newpage
+\subsection*{Problem 4}
+\textit{
+    Prove if A and B are similar, they have the same eigenvalues
+}
+
+\solution
+
+Let $A$, $B$ be $n \times n$ matrices. Let $Av = \lambda v$, where $v$ is the eigenvector of $A$ and $\lambda$ is the eigenvalue of $A$.
+
+Given $A$ and $B$ are similar,
+\begin{align*}
+    X^{-1}A{X} &= B \\
+    \implies A &= XBX^{-1} \\
+    Av &= XBX^{-1}v \text{ (multiply both sides by vector $v$ on right side)} \\
+    \lambda v &= XBX^{-1}v \text{ (as $Av = \lambda v$)} \\
+    X^{-1}\lambda v &= BX^{-1}v \text{ (multiply both sides by $X^{-1}$ on left side)} \numberthis \label{eq:4_1}
+\end{align*}
+
+Rearranging the terms in \eqref{eq:4_1} and substituting $X^{-1}v$ with $u$, we get
+\begin{equation}
+    Bu = \lambda u \label{eq:4_2}
+\end{equation}
+
+\eqref{eq:4_2} implies $\lambda$ is the eigenvalue of $B$ and $u$ is the eigenvector of $B$. Thus, $A$ and $B$ have the same eigenvalue $\lambda$.
+\rightqed
+
+% Start problem 5
+\newpage
+\subsection*{Problem 5}
+\textit{
+    Prove $V^TMV = diag(\lambda_1, \hdots, \lambda_n)$
+}
+
+\solution
+
+Calculating $MV$ first.
+\begin{align}
+    MV &= M\begin{bmatrix}
+        v_1 & \hdots & v_n
+    \end{bmatrix} \label{eq:5_1} \\
+    &= \begin{bmatrix}
+        Mv_1 & \hdots & Mv_n
+    \end{bmatrix} \label{eq:5_2} \\
+    &= \begin{bmatrix}
+        \lambda_1v_1 & \hdots & \lambda_nv_n
+    \end{bmatrix}_{n \times n} \label{eq:5_3}
+\end{align}
+
+In \eqref{eq:5_1}, we view the matrix $V$ as a matrix of columns. \eqref{eq:5_2} follows, which is simply a matrix-vector product (between $M$ and $v_i$). In \eqref{eq:5_3}, we use the fact $Mv_i = \lambda_iv_i$ as $\lambda_i$ and $v$ are the eigenvalue and eigenvector of $M$.
+
+Calculating $V^TMV$,
+\begin{align*}
+    V^TMV &= \begin{bmatrix}
+        v_1^T \\ \vdots \\ v_n^T
+    \end{bmatrix}_{n \times n}
+    \begin{bmatrix}
+        \lambda_1v_1 & \hdots & \lambda_nv_n
+    \end{bmatrix}_{n \times n} \\
+    &= \begin{bmatrix}
+        \lambda_1 \langle v_1^T, v_1 \rangle & \hdots & \lambda_n \langle v_1^T, v_n \rangle \\
+        \vdots & \ddots & \vdots \\
+        \lambda_1 \langle v_n^T, v_1 \rangle & \hdots & \lambda_n \langle v_n^T, v_n \rangle \\
+    \end{bmatrix} \numberthis \label{eq:5_6}
+\end{align*}
+
+Now, we use the fact, eigenvectors $v_i$ and $v_j$ are orthonormal to each other
+\begin{equation}
+    \langle v_i^T, v_j \rangle = \begin{cases}
+        0 & i \neq j \text{ ($v_i$ and $v_j$ are prependicular ot each other)} \\
+        1 & i = j \text{ (dot product of unit vectors is 1)}
+    \end{cases} \label{eq:5_7}
+\end{equation}
+
+Using result from \eqref{eq:5_7} in \eqref{eq:5_6}, we get
+\begin{align*}
+    V^TMV &= \begin{bmatrix}
+        \lambda_1 & \hdots & 0 \\
+        \vdots & \ddots & \vdots \\
+        0 & \hdots & \lambda_n \\
+    \end{bmatrix} \\
+    &= diag (\lambda_1, \hdots, \lambda_n)
+\end{align*}
+\rightqed
+
+% Start problem 6
+\newpage
+\subsection*{Problem 6}
+\textit{
+    Prove $tr M = \lambda_1 + \hdots + \lambda_n$.
+}
+
+\solution
+
+From Problem 5, we know that if $V$ is an orthogonal matrix with the orthonormal eigenvectors of $M$ as the columns, then
+\begin{equation}
+    V^TMV = diag(\lambda_1, \hdots, \lambda_n)
+\end{equation}
+
+Taking the trace of $V^TMV$, we get
+\begin{equation}
+    tr (V^TMV) = \lambda_1 + \hdots + \lambda_n \label{eq:6_1}
+\end{equation}
+
+Now we use the fact $tr (AB) = tr (BA)$. Let $A = V^T$ and $B = MV$, then we have
+\begin{align*}
+    tr ((V^T)(MV)) &= tr ((MV)(V^T)) \\
+                   &= tr (MVV^T) \\
+                   &= tr M \text{ (as $VV^T = I$)} \numberthis \label{eq:6_2}
+\end{align*}
+
+From \eqref{eq:6_1} and \eqref{eq:6_2}, we get
+\begin{equation}
+    tr M = \lambda_1 + \hdots + \lambda_n
+\end{equation}
+\rightqed
+\end{document}
