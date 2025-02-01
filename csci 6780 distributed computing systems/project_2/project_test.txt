@@ -1,0 +1,68 @@
+//basic testing
+pwd
+ls
+mkdir newfolder
+pwd
+cd newfolder
+pwd
+cd ..
+put test.txt
+get test.txt
+ls
+delete test.txt
+ls
+quit
+
+put nonfile.unknown
+get nonfile.unknown
+cd nonfolder
+delete nonfile.unknown
+
+cd
+delete
+get
+put
+//basic file operation testing
+    //multiple iterations
+put cfile1.txt
+put cfile2.txt
+put cfile3.txt
+
+get sfile1.txt
+get sfile2.txt
+get sfile3.txt
+
+delete cfile1.txt
+delete cfile2.txt
+delete cfile3.txt
+
+//concurrency
+//test concurrency with basic over - expect extremely large file sends
+    //the point is to perform basic commands during send 
+put large_cfile.txt
+get large_sfile.txt
+
+//multiple clients - allow large delays over file sending
+c1: put cfile1.txt
+c2: put cfile1.txt
+
+c1: get sfile1.txt
+c2: get sfile1.txt
+
+c1: delete sfile1.txt
+c2: get sfile1.txt
+
+c1: get sfile1.txt
+c2: delete sfile1.txt
+
+c1: put cfile1.txt
+c2: delete cfile1.txt
+
+//while mkdir is a 'file operation', I do not believe it is necessary to test
+//it creates a new, unknown folder that didn't exist
+//unless put can create a folder on its own, mkdir testing may be unnecessary
+
+//test client concurrency
+c1: put cfile1.txt & //(large file, should use delay)
+c1: cd newfolder
+c1: get cfile1.txt

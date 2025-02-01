@@ -1,0 +1,25 @@
+pwd
+ls
+mkdir newfolder
+pwd
+cd newfolder
+pwd
+cd ..
+put test.txt
+get test.txt
+ls
+delete test.txt
+ls
+quit
+
+put nonfile.unknown
+get nonfile.unknown
+cd nonfolder
+delete nonfile.unknown
+
+cd
+delete
+get
+put
+
+
